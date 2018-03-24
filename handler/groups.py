@@ -57,12 +57,12 @@ class GroupHandler:
         else:
             return jsonify(Error="Malformed post request")
 
-    def deleteChatGroupbyID(self, gid):
+    def deleteChatGroupbyID(self, args):
         dao = GroupDAO()
-        if not dao.getGroupById(gid):
+        if not dao.getGroupById(int(args.get('gid'))):
             return jsonify(Error="Part not found."), 404
         else:
-            dao.delete(gid)
+            dao.delete(int(args.get('gid')))
             return jsonify(DeleteStatus="OK"), 200
 
     # def insertGroup(self,form):
