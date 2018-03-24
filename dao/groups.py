@@ -1,4 +1,5 @@
 import random
+from flask import jsonify
 class GroupDAO:
     def  __init__(self):
         G1 = [111, 'Los recoge escombros']
@@ -25,6 +26,11 @@ class GroupDAO:
         G4 = [gid,gName]
         self.data.append(G4)
         return gid
+
+    def delete(self,gid):
+        return self.getGroupById(gid)
+
+
 
 
 
