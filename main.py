@@ -25,5 +25,9 @@ def groups():
         handler = GroupHandler()
         return handler.getAllGroups()
 
+@app.route('/ChatApp/groups/<int:gID>')
+def getGroupById(gID):
+    return GroupHandler().getGroupById(gID)
+
 if __name__ == '__main__':
     app.run()

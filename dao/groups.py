@@ -14,6 +14,12 @@ class GroupDAO:
     def getAllGroups(self):
         return self.data
 
+    def getGroupById(self, gid):
+        for r in self.data:
+            if gid == r[0]:
+                return r
+        return None
+
     def insert(self,gName):
 
         gid = random.randint(1,102)

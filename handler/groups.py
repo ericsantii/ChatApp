@@ -29,6 +29,16 @@ class GroupHandler:
             result_list.append(result)
         return jsonify(Groups=result_list)
 
+    def getGroupById(self, gid):
+        dao = GroupDAO()
+        result = dao.getGroupById(gid)
+        if result == None:
+            return jsonify(Error="NOT FOUND"), 404
+        else :
+            mapped = self.mapToDict(result)
+            return jsonify(Groups=mapped)
+
+
     # def insertGroup(self,form):
     #     if form and len(form) == 2:
     #         gid = form['gid']
