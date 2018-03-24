@@ -8,17 +8,19 @@ app = Flask(__name__)
 def home():
     return "Welcome to Chat App"
 
-@app.route('/ChatApp/persons')
-def persons():
-    if request.args:
-        return PersonHandler().searchPerson(request.args)
-    else:
-        handler = PersonHandler()
-        return handler.getAllPersons()
+@app.route('/ChatApp/persons', methods = ['POST', 'GET'])
+def getPersonByID():
 
-@app.route('/ChatApp/persons/<int:pID>')
-def getPersonById(pID):
-    return PersonHandler().getPersonById(pID)
+    if request.method == 'GET':
+        if request.args:
+            return PersonHandler().getPersonById(request.args)
+        else:
+            return PersonHandler().getAllPersons()
+
+    elif request.method == 'POST':
+        return PersonHandler().insertPerson(request.form)
+
+
 
 @app.route('/ChatApp/groups', methods = ['POST', 'DELETE'])
 def groups():
