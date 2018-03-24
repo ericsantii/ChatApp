@@ -62,8 +62,10 @@ class GroupHandler:
         if not dao.getGroupById(int(args.get('gid'))):
             return jsonify(Error="Part not found."), 404
         else:
-            dao.delete(int(args.get('gid')))
-            return jsonify(DeleteStatus="OK"), 200
+            param = int(args.get('gid'))
+            if param:
+                dao.delete()
+                return jsonify(DeleteStatus="OK"), 200
 
     # def insertGroup(self,form):
     #     if form and len(form) == 2:
