@@ -22,10 +22,21 @@ def getPersonByID():
 
 
 
-@app.route('/ChatApp/groups')
+@app.route('/ChatApp/groups', methods = ['POST', 'DELETE'])
 def groups():
         handler = GroupHandler()
-        return handler.getAllGroups()
+        if request.method == 'POST':
+            return handler.createNewChatGroup(request.form)
+        else:
+            return handler.deleteChatGroupbyID(request.args)
+
+@app.route('/ChatApp/member', methods = ['POST', 'GET'])
+def memberByID():
+        handler = GroupHandler()
+        if request.method == 'POST':
+            return handler.add(request.form)
+        else:
+            return handler.deleteChatGroupbyID(request.args)
 
 if __name__ == '__main__':
     app.run()
