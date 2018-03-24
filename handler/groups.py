@@ -10,6 +10,7 @@ class GroupHandler:
         result['gid'] = row[0]
         result['gname'] = row[1]
         return result
+
     def mapToPersonDict(self, row):
         result = {}
         result['pID'] = row[0]
@@ -17,7 +18,12 @@ class GroupHandler:
         result['uLastName'] = row[2]
         result['uPhone'] = row[3]
         result['uEmail'] = row[4]
+        return result
 
+    def build_group_attributes(self, gid, gname):
+        result = {}
+        result['gid'] = gid
+        result['gname'] = gname
         return result
 
     def getAllGroups(self):
@@ -32,12 +38,27 @@ class GroupHandler:
     def getGroupById(self, gid):
         dao = GroupDAO()
         result = dao.getGroupById(gid)
-        if result == None:
+        if result is None:
             return jsonify(Error="NOT FOUND"), 404
-        else :
+        else:
             mapped = self.mapToDict(result)
             return jsonify(Groups=mapped)
 
+    def createNewChatGroup(self, form):
+        if form and len(form) == 1:
+            gname = form['gname']
+            if gname:
+                dao = GroupDAO()
+                gid = dao.insert(gname)
+                result = self.build_group_attributes(gid, gname)
+                return jsonify(Group=result), 201
+            else:
+                return jsonify(Error="Malformed post request")
+        else:
+            return jsonify(Error="Malformed post request")
+
+    def deleteChatGroupbyID(self, gid):
+        return
 
     # def insertGroup(self,form):
     #     if form and len(form) == 2:

@@ -21,8 +21,9 @@ class GroupDAO:
         return None
 
     def insert(self,gName):
-
         gid = random.randint(1,102)
+        G4 = [gid,gName]
+        self.data.append(G4)
         return gid
 
 
