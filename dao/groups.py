@@ -1,10 +1,13 @@
-import random
 from flask import jsonify
+from dao.person import PersonDAO
 class GroupDAO:
     def  __init__(self):
-        G1 = [111, 'Los recoge escombros']
-        G2 = [112,'Fortnite PR']
-        G3 = [113,'Los RG4L']
+
+        persons = PersonDAO().getAllPersons()
+
+        G1 = [111, 'Los recoge escombros',persons[0][0]]
+        G2 = [112,'Fortnite PR',persons[2][0]]
+        G3 = [113,'Los RG4L',persons[4][0]]
 
         self.data = []
         self.data.append(G1)
@@ -21,14 +24,14 @@ class GroupDAO:
                 return r
         return None
 
-    def insert(self,gName):
-        gid = random.randint(1,102)
-        G4 = [gid,gName]
+    def insert(self,gName,gOwner):
+        gID = 200
+        G4 = [gID,gName,gOwner]
         self.data.append(G4)
-        return gid
+        return gID
 
-    def delete(self,gid):
-        return self.getGroupById(gid)
+    def delete(self,gID):
+        return self.getGroupById(gID)
 
 
 

@@ -6,32 +6,35 @@ app = Flask(__name__)
 def home():
     return "Welcome to PapayaChat App"
 
+@app.route('/ChatApp/persons', methods = ['GET'])
+def getPersonByID():
+    if request.args:
+        return PersonHandler().getPersonById(request.args)
+    else:
+        return PersonHandler().getAllPersons()
+
+@app.route('/ChatApp/groups', methods = ['GET'])
+def groups():
+    if request.args:
+        return GroupHandler().getGroupById(request.args)
+    else:
+        return GroupHandler().getAllGroups()
+
 @app.route('/ChatApp/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         return PersonHandler().CreateNewPerson(request.form)
-
     else:
         return "Welcome to PapayaChat! Please formulate a post request to create a New USER"
 
-@app.route('/ChatApp/persons', methods = ['POST', 'GET'])
-def getPersonByID():
-    if request.method == 'GET':
-        if request.args:
-            return PersonHandler().getPersonById(request.args)
-        else:
-            return PersonHandler().getAllPersons()
+@app.route('/ChatApp/createNewGroup', methods=['POST', 'DELETE'])
+def groupCreate():
+    if request.method == 'POST':
+        return GroupHandler().createNewChatGroup(request.form)
+    else:
+        return GroupHandler().deleteChatGroupbyID(request.args)
 
 
-
-@app.route('/ChatApp/groups', methods = ['POST', 'DELETE'])
-def groups():
-        handler = GroupHandler()
-        if request.method == 'POST':
-            print("Hello")
-            return handler.createNewChatGroup(request.form)
-        else:
-            return handler.deleteChatGroupbyID(request.args)
 
 if __name__ == '__main__':
     app.run()

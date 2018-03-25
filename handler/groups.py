@@ -7,23 +7,25 @@ class GroupHandler:
 
     def mapToDict(self, row):
         result = {}
-        result['gid'] = row[0]
-        result['gname'] = row[1]
+        result['gID'] = row[0]
+        result['gName'] = row[1]
+        result['gOwner'] = row[2]
         return result
 
     def mapToPersonDict(self, row):
         result = {}
         result['pID'] = row[0]
-        result['uFirstName'] = row[1]
-        result['uLastName'] = row[2]
-        result['uPhone'] = row[3]
-        result['uEmail'] = row[4]
+        result['pFirstName'] = row[1]
+        result['pLastName'] = row[2]
+        result['pPhone'] = row[3]
+        result['pEmail'] = row[4]
         return result
 
-    def build_group_attributes(self, gid, gname):
+    def build_group_attributes(self, gID, gName,gOwner):
         result = {}
-        result['gid'] = gid
-        result['gname'] = gname
+        result['gID'] = gID
+        result['gName'] = gName
+        result['gOwner'] = gOwner
         return result
 
     def getAllGroups(self):
@@ -45,12 +47,13 @@ class GroupHandler:
             return jsonify(Groups=mapped)
 
     def createNewChatGroup(self, form):
-        if form and len(form) == 1:
-            gname = form['gname']
-            if gname:
+        if form and len(form) == 2:
+            gName = form['gName']
+            gOwner = form['gOwner']
+            if gName:
                 dao = GroupDAO()
-                gid = dao.insert(gname)
-                result = self.build_group_attributes(gid, gname)
+                gID = dao.insert(gName,gOwner)
+                result = self.build_group_attributes(gID, gName,gOwner)
                 return jsonify(Group=result), 201
             else:
                 return jsonify(Error="Malformed post request")
@@ -59,10 +62,10 @@ class GroupHandler:
 
     def deleteChatGroupbyID(self, args):
         dao = GroupDAO()
-        if not dao.getGroupById(int(args.get('gid'))):
+        if not dao.getGroupById(int(args.get('gID'))):
             return jsonify(Error="Part not found."), 404
         else:
-            param = int(args.get('gid'))
+            param = int(args.get('gID'))
             if param:
                 dao.delete()
                 return jsonify(DeleteStatus="OK"), 200
