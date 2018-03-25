@@ -37,7 +37,7 @@ class PersonHandler:
             return jsonify(Person=mapped)
 
     def CreateNewPerson(self,form):
-        if len(form) != 5:
+        if len(form) != 4:
             return jsonify(Error="Malformed post request"), 400
         else:
             pFirstName = form['pFirstName']
