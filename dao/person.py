@@ -22,7 +22,7 @@ class PersonDAO:
                 return r
         return None
 
-    def insert(self):
+    def CreateNewPerson(self):
         # cursor = self.conn.cursor()
         # query = "insert into Person(pFirstName, pLastName, pPhone, pEmail) values (%s, %s, %s, %s) returning pid;"
         # cursor.execute(query, (pFirstName, pLastName, pPhone, pEmail))
@@ -30,3 +30,4 @@ class PersonDAO:
         # self.conn.commit()
         pid = 30
         return pid
+
