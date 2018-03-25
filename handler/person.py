@@ -46,20 +46,20 @@ class PersonHandler:
             pEmail = form['pEmail']
             if pFirstName and pLastName and pPhone and pEmail:
                 dao = PersonDAO()
-                pID = dao.CreateNewPerson(pFirstName, pLastName, pPhone, pEmail)
+                pID = dao.insert(pFirstName, pLastName, pPhone, pEmail)
                 result = {}
                 result = self.build_person_attributes(pID, pFirstName, pLastName, pPhone, pEmail)
                 return jsonify(Person=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
-    def verifyPerson(form):
-        pFirstName = form['pFirstName']
-        pLastName = form['pLastName']
-        dao = PersonDAO
-        userList = dao.getAllPersons()
-        for r in userList:
-            if pFirstName == r[1] and pLastName == r[2]:
-                return True
-
-        return False
+    # def verifyPerson(form):
+    #     pFirstName = form['pFirstName']
+    #     pLastName = form['pLastName']
+    #     dao = PersonDAO
+    #     userList = dao.getAllPersons()
+    #     for r in userList:
+    #         if pFirstName == r[1] and pLastName == r[2]:
+    #             return True
+    #
+    #     return False
 

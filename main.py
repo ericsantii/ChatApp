@@ -1,28 +1,18 @@
 from flask import Flask, request,jsonify,render_template, redirect, url_for
 from handler.person import PersonHandler
 from handler.groups import GroupHandler
-registeredForm = object
 app = Flask(__name__)
 @app.route('/')
 def home():
     return "Welcome to PapayaChat App"
 
-# Route for handling the login page logic
 @app.route('/ChatApp/register', methods=['GET', 'POST'])
 def register():
-    global registeredForm
     if request.method == 'POST':
-        registeredForm = request.form
-        return redirect(url_for('welcome'))
-    else:
-        return render_template('register.html')
+        return PersonHandler().CreateNewPerson(request.form)
 
-@app.route('/ChatApp/welcome')
-def welcome():
-    #Se verifica si el usuario existe
-    #PersonHandler().CreateNewPerson(request.form)
-    #Aqui se utiliza request.form['pFirstName] y request.form['pLastName']
-    return "Welcome to PapayaChat!"
+    else:
+        return "Welcome to PapayaChat! Please formulate a post request to create a New USER"
 
 @app.route('/ChatApp/persons', methods = ['POST', 'GET'])
 def getPersonByID():
