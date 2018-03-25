@@ -18,9 +18,9 @@ class GroupDAO:
     def getAllGroups(self):
         return self.data
 
-    def getGroupById(self, gid):
+    def getGroupById(self, gID):
         for r in self.data:
-            if gid == r[0]:
+            if gID == r[0]:
                 return r
         return None
 
@@ -32,6 +32,15 @@ class GroupDAO:
 
     def delete(self,gID):
         return self.getGroupById(gID)
+
+    def getOwnerByGroupId(self):
+        dao = PersonDAO()
+        grouplist = self.getAllGroups()
+        mapped_result = []
+        for r in grouplist:
+            mapped_result.append(dao.getPersonById(r[2]))
+
+        return mapped_result
 
 
 

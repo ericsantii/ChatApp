@@ -28,6 +28,15 @@ class GroupHandler:
         result['gOwner'] = gOwner
         return result
 
+    def build_owner_dict(self,row):
+        result = {}
+        result['oID'] = row[0]
+        result['oFirstName'] = row[1]
+        result['oLastName'] = row[2]
+        result['oPhone'] = row[3]
+        result['oEmail'] = row[4]
+        return result
+
     def getAllGroups(self):
         dao = GroupDAO()
         group_list = dao.getAllGroups()
@@ -45,6 +54,14 @@ class GroupHandler:
         else:
             mapped = self.mapToDict(result)
             return jsonify(Groups=mapped)
+
+    def getOwnerByGroupId(self):
+        dao = GroupDAO()
+        owner_list = dao.getOwnerByGroupId()
+        results = []
+        for row in owner_list:
+            results.append(self.build_owner_dict(row))
+        return jsonify(Owners=results)
 
     def createNewChatGroup(self, form):
         if form and len(form) == 2:

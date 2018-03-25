@@ -20,6 +20,10 @@ def groups():
     else:
         return GroupHandler().getAllGroups()
 
+@app.route('/ChatApp/groups/owners', methods = ['GET'])
+def owners():
+        return GroupHandler().getOwnerByGroupId()
+
 @app.route('/ChatApp/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -34,9 +38,7 @@ def groupCreate():
     elif request.method == 'DELETE':
         return GroupHandler().deleteChatGroupbyID(request.args)
     else:
-        return "Please formulate a post request to create a new Chat Group or delete a new Chat Group"
-
-
+        return "Please formulate a post request to create a new Chat Group or a delete request to delete a new Chat Group"
 
 if __name__ == '__main__':
     app.run()
