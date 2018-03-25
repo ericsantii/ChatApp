@@ -25,14 +25,16 @@ def register():
     if request.method == 'POST':
         return PersonHandler().CreateNewPerson(request.form)
     else:
-        return "Welcome to PapayaChat! Please formulate a post request to create a New USER"
+        return "Please formulate a post request to create a New USER"
 
-@app.route('/ChatApp/createNewGroup', methods=['POST', 'DELETE'])
+@app.route('/ChatApp/createNewGroup', methods=['GET','POST', 'DELETE'])
 def groupCreate():
     if request.method == 'POST':
         return GroupHandler().createNewChatGroup(request.form)
-    else:
+    elif request.method == 'DELETE':
         return GroupHandler().deleteChatGroupbyID(request.args)
+    else:
+        return "Please formulate a post request to create a new Chat Group or delete a new Chat Group"
 
 
 
