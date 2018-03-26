@@ -41,6 +41,13 @@ class GroupDAO:
             mapped_result.append(dao.getPersonById(r[2]))
 
         return mapped_result
+    def verify(self, gID):
+        groups = GroupDAO().getAllGroups()
+        groupExist = False
+        for r in groups:
+            if gID == r[0]:
+                return True
+        return False
 
 
 

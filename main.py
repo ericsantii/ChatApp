@@ -1,11 +1,16 @@
 from flask import Flask, request,jsonify,render_template, redirect, url_for
 from handler.person import PersonHandler
 from handler.groups import GroupHandler
+from handler.message import MessageHandler
 app = Flask(__name__)
+
+# Home Route which the applications starts in
 @app.route('/')
 def home():
     return "Welcome to PapayaChat App"
 
+# Displays all persons/users of the database app
+# Or choose a specific person to display through pID
 @app.route('/ChatApp/persons', methods = ['GET'])
 def getPersonByID():
     if request.args:
@@ -13,6 +18,13 @@ def getPersonByID():
     else:
         return PersonHandler().getAllPersons()
 
+# Displays all owners of the chat groups
+@app.route('/ChatApp/persons/owners', methods = ['GET'])
+def owners():
+        return GroupHandler().getOwnerByGroupId()
+
+# Displays all chat groups of the database  app
+# Or choose a specific group to display through gID
 @app.route('/ChatApp/groups', methods = ['GET'])
 def groups():
     if request.args:
@@ -20,10 +32,23 @@ def groups():
     else:
         return GroupHandler().getAllGroups()
 
-@app.route('/ChatApp/groups/owners', methods = ['GET'])
-def owners():
-        return GroupHandler().getOwnerByGroupId()
+# Displays all messages of the database  app
+# Or choose a specific message to display through mID
+@app.route('/ChatApp/groups/<int:gID>/displaymessages', methods=['GET'])
+def displayMessages(gID):
+    return  MessageHandler().getMessageByGroup(gID)
 
+# Displays all messages of the database  app
+# Or choose a specific message to display through mID
+@app.route('/ChatApp/messages', methods = ['GET'])
+def messages():
+    if request.args:
+        return MessageHandler().getMessageById(request.args)
+    else:
+        return MessageHandler().getAllMessages()
+
+# Add a new person/user to the database through the POST request
+# Displays a message if a Get request is sent instead
 @app.route('/ChatApp/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -31,6 +56,9 @@ def register():
     else:
         return "Please formulate a post request to create a New USER"
 
+# Creates a new group and add it to the database through the POST request
+# Delete a desired group from the database with a DELETE request
+# Displays a message if a GET request is sent instead
 @app.route('/ChatApp/createNewGroup', methods=['GET','POST', 'DELETE'])
 def groupCreate():
     if request.method == 'POST':
@@ -39,6 +67,8 @@ def groupCreate():
         return GroupHandler().deleteChatGroupbyID(request.args)
     else:
         return "Please formulate a post request to create a new Chat Group or a delete request to delete a new Chat Group"
+
+
 
 if __name__ == '__main__':
     app.run()
