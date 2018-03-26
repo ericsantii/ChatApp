@@ -52,14 +52,4 @@ class PersonHandler:
                 return jsonify(Person=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
-    # def verifyPerson(form):
-    #     pFirstName = form['pFirstName']
-    #     pLastName = form['pLastName']
-    #     dao = PersonDAO
-    #     userList = dao.getAllPersons()
-    #     for r in userList:
-    #         if pFirstName == r[1] and pLastName == r[2]:
-    #             return True
-    #
-    #     return False
 

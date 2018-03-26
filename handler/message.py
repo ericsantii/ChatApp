@@ -59,11 +59,13 @@ class MessageHandler:
             multimedia = form['multimedia']
             posterID = form['posterID']
             groupID = form['groupID']
-            if (mText or multimedia) and timedate and posterID and groupID:
-                dao = MessageDAO()
-                mID = dao.insert(mText, timedate, multimedia, posterID,groupID)
-                result = self.build_message_attributes(mID, mText, timedate, multimedia, posterID,groupID)
-                return jsonify(Messages=result), 201
+            if MessageDAO().verify(posterID,groupID):
+                if (mText or multimedia) and timedate and posterID and groupID:
+                    dao = MessageDAO()
+                    mID = dao.insert(mText, timedate, multimedia, posterID,groupID)
+                    result = self.build_message_attributes(mID, mText, timedate, multimedia, posterID,groupID)
+                    return jsonify(Message=result), 201
+                else:
+                    return jsonify(Error="Unexpected attributes in post request"), 400
             else:
-                return jsonify(Error="Unexpected attributes in post request"), 400
-
+                return jsonify(Error="Invalid Message Creation: Person or Group does not exist in the database"), 400

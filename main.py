@@ -59,7 +59,7 @@ def register():
 # Creates a new group and add it to the database through the POST request
 # Delete a desired group from the database with a DELETE request
 # Displays a message if a GET request is sent instead
-@app.route('/ChatApp/createNewGroup', methods=['GET','POST', 'DELETE'])
+@app.route('/ChatApp/createGroup', methods=['GET','POST', 'DELETE'])
 def groupCreate():
     if request.method == 'POST':
         return GroupHandler().createNewChatGroup(request.form)
@@ -67,6 +67,14 @@ def groupCreate():
         return GroupHandler().deleteChatGroupbyID(request.args)
     else:
         return "Please formulate a post request to create a new Chat Group or a delete request to delete a new Chat Group"
+
+# Creates a new message and add it to the database through the POST request
+# Prompt for a post request if a GET request is sent instead
+@app.route('/ChatApp/postMessage', methods=['GET','POST'])
+def messageCreate():
+    if request.method == 'POST':
+        return MessageHandler().CreateNewMessage(request.form)
+    return "Please formulate a post request to post a new message in a desired group in the Database"
 
 
 

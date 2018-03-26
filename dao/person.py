@@ -31,3 +31,9 @@ class PersonDAO:
         pid = 30
         return pid
 
+    def verify(self, pID):
+        persons = PersonDAO().getAllPersons()
+        for r in persons:
+            if pID == r[0]:
+                return True
+        return False

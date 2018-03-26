@@ -46,3 +46,6 @@ class MessageDAO:
         # self.conn.commit()
         pid = 310
         return pid
+
+    def verify(self,posterID,groupID):
+        return PersonDAO().verify(int(posterID)) and GroupDAO().verify(int(groupID))
