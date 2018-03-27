@@ -125,7 +125,7 @@ def displayContacts(pID):
 
 @app.route('/ChatApp/contactsinfo/<int:pID>', methods=['GET'])
 def displayContactsInfo(pID):
-    return ContactHandler().getAllContacts(pID)
+    return ContactHandler().getContactInfo(pID)
 
 
 if __name__ == '__main__':

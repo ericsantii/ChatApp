@@ -19,16 +19,19 @@ class ContactDAO:
         self.data.append(c5)
 
     def getAllContacts(self, pID):
+        ltr = []
         for r in self.data:
+            print(r[0])
             if pID == r[0]:
-                return r
-        return None
+                ltr.append(r)
+        return ltr
 
     def getContactInfo(self, pid):
         persons = PersonDAO().getAllPersons()
+        ltr = []
         for r in self.data:
             if pid == r[0]:
                 for p in persons:
                     if r[1] == p[0]:
-                        return p
-        return None
+                        ltr.append(p)
+        return ltr

@@ -11,6 +11,15 @@ class ContactHandler:
         result['cID'] = row[1]
         return result
 
+    def mapToDictPerson(self, row):
+        result = {}
+        result['pID'] = row[0]
+        result['pFirstName'] = row[1]
+        result['pLastName'] = row[2]
+        result['pPhone'] = row[3]
+        result['pEmail'] = row[4]
+        return result
+
     def getAllContacts(self, pID):
         dao = ContactDAO()
         result = dao.getAllContacts(pID)
@@ -21,11 +30,10 @@ class ContactHandler:
             mapped_result.append(self.mapToDict(r))
         return jsonify(Contact=mapped_result)
 
-    def getConctactInfo(self, pid):
+    def getContactInfo(self, pid):
         dao = ContactDAO()
-        phandler = PersonHandler
         result = dao.getContactInfo(pid)
         mapped_result = []
         for r in result:
-            mapped_result.append(phandler.mapToDict(result))
+            mapped_result.append(self.mapToDictPerson(r))
         return jsonify(ContactInfo=mapped_result)
