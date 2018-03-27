@@ -1,17 +1,18 @@
 from flask import jsonify
 from dao.person import PersonDAO
+
+
 class GroupDAO:
-    def  __init__(self):
+    def __init__(self):
 
         G1 = [111, 'Los recoge escombros', 1]
-        G2 = [112,'Fortnite PR', 5]
-        G3 = [113,'Los RG4L', 10]
+        G2 = [112, 'Fortnite PR', 5]
+        G3 = [113, 'Los RG4L', 10]
 
         self.data = []
         self.data.append(G1)
         self.data.append(G2)
         self.data.append(G3)
-
 
     def getAllGroups(self):
         return self.data
@@ -22,13 +23,13 @@ class GroupDAO:
                 return r
         return None
 
-    def insert(self,gName,gOwner):
+    def insert(self, gName, gOwner):
         gID = 200
-        G4 = [gID,gName,gOwner]
+        G4 = [gID, gName, gOwner]
         self.data.append(G4)
         return gID
 
-    def delete(self,gID):
+    def delete(self, gID):
         return self.getGroupById(gID)
 
     def getOwnerByGroupId(self):
@@ -49,23 +50,17 @@ class GroupDAO:
 
     def getPeopleByGroupID(self, gID):
         if gID == 111:
-            return [[1, 'Luis','Vega', '787-634-1091', 'luis.vega5@upr.edu']]
+            return [[1, 'Luis', 'Vega', '787-634-1091', 'luis.vega5@upr.edu']]
         elif gID == 112:
             T = []
-            T.append([1, 'Luis','Vega', '787-634-1091', 'luis.vega5@upr.edu'])
+            T.append([1, 'Luis', 'Vega', '787-634-1091', 'luis.vega5@upr.edu'])
             T.append([10, 'Fernando', 'Ortiz', '122-059-9031', 'fernando.ortiz@upr.edu'])
             return T
         elif gID == 113:
             T = []
-            T.append([1, 'Luis','Vega', '787-634-1091', 'luis.vega5@upr.edu'])
+            T.append([1, 'Luis', 'Vega', '787-634-1091', 'luis.vega5@upr.edu'])
             T.append([5, 'Eric', 'Santillana', '939-089-1011', 'eric.santillana@upr.edu'])
             T.append([10, 'Fernando', 'Ortiz', '122-059-9031', 'fernando.ortiz@upr.edu'])
             return T
         else:
             return []
-
-
-
-
-
-

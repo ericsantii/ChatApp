@@ -2,6 +2,7 @@ from flask import jsonify
 from dao.contact import ContactDAO
 from handler.person import PersonHandler
 
+
 class ContactHandler:
 
     def mapToDict(self, row):
@@ -10,7 +11,7 @@ class ContactHandler:
         result['cID'] = row[1]
         return result
 
-    def getAllContacts(self,pID):
+    def getAllContacts(self, pID):
         dao = ContactDAO()
         result = dao.getAllContacts(pID)
         if result is None:
@@ -20,11 +21,11 @@ class ContactHandler:
             mapped_result.append(self.mapToDict(r))
         return jsonify(Contact=mapped_result)
 
-    def getConctactInfo(self,pid):
+    def getConctactInfo(self, pid):
         dao = ContactDAO()
         phandler = PersonHandler
         result = dao.getContactInfo(pid)
         mapped_result = []
         for r in result:
             mapped_result.append(phandler.mapToDict(result))
-        return jsonify(ContactInfo = mapped_result)
+        return jsonify(ContactInfo=mapped_result)

@@ -21,14 +21,14 @@ class GroupHandler:
         result['pEmail'] = row[4]
         return result
 
-    def build_group_attributes(self, gID, gName,gOwner):
+    def build_group_attributes(self, gID, gName, gOwner):
         result = {}
         result['gID'] = gID
         result['gName'] = gName
         result['gOwner'] = gOwner
         return result
 
-    def build_owner_dict(self,row):
+    def build_owner_dict(self, row):
         result = {}
         result['oID'] = row[0]
         result['oFirstName'] = row[1]
@@ -69,8 +69,8 @@ class GroupHandler:
             gOwner = form['gOwner']
             if gName:
                 dao = GroupDAO()
-                gID = dao.insert(gName,gOwner)
-                result = self.build_group_attributes(gID, gName,gOwner)
+                gID = dao.insert(gName, gOwner)
+                result = self.build_group_attributes(gID, gName, gOwner)
                 return jsonify(Group=result), 201
             else:
                 return jsonify(Error="Malformed post request")
@@ -96,7 +96,7 @@ class GroupHandler:
         for row in person_list:
             result = self.mapToPersonDict(row)
             results.append(result)
-        return jsonify(PeopleGroup= results)
+        return jsonify(PeopleGroup=results)
 
     # def insertGroup(self,form):
     #     if form and len(form) == 2:

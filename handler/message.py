@@ -17,7 +17,7 @@ class MessageHandler:
         result = {}
         result['mID'] = mID
         result['mText'] = mText
-        result['timedate'] =timedate
+        result['timedate'] = timedate
         result['multimedia'] = multimedia
         result['posterID'] = posterID
         result['groupID'] = groupID
@@ -29,7 +29,6 @@ class MessageHandler:
         result['pID'] = row[1]
         result['rType'] = row[2]
         return result
-
 
     def getAllMessages(self):
         dao = MessageDAO()
@@ -44,11 +43,11 @@ class MessageHandler:
         result = dao.getMessageById(int(args.get('mID')))
         if result == None:
             return jsonify(Error="NOT FOUND"), 404
-        else :
+        else:
             mapped = self.mapToDict(result)
             return jsonify(Messages=mapped)
 
-    def getMessageByGroup(self,gID):
+    def getMessageByGroup(self, gID):
         dao = MessageDAO()
         result = dao.getMessageByGroup(gID)
         if result is None:
@@ -58,7 +57,8 @@ class MessageHandler:
             for row in result:
                 mapped_results.append(self.mapToDict(row))
             return jsonify(Messages=mapped_results)
-    def CreateNewMessage(self,form):
+
+    def CreateNewMessage(self, form):
         if len(form) != 5:
             return jsonify(Error="Malformed post request"), 400
         else:
@@ -67,11 +67,11 @@ class MessageHandler:
             multimedia = form['multimedia']
             posterID = form['posterID']
             groupID = form['groupID']
-            if MessageDAO().verify(posterID,groupID):
+            if MessageDAO().verify(posterID, groupID):
                 if (mText or multimedia) and timedate and posterID and groupID:
                     dao = MessageDAO()
-                    mID = dao.insert(mText, timedate, multimedia, posterID,groupID)
-                    result = self.build_message_attributes(mID, mText, timedate, multimedia, posterID,groupID)
+                    mID = dao.insert(mText, timedate, multimedia, posterID, groupID)
+                    result = self.build_message_attributes(mID, mText, timedate, multimedia, posterID, groupID)
                     return jsonify(Message=result), 201
                 else:
                     return jsonify(Error="Unexpected attributes in post request"), 400
@@ -87,7 +87,7 @@ class MessageHandler:
         for row in reacts_list:
             result = self.mapToReactDict(row)
             results.append(result)
-        return jsonify(ReactsForMessage= results)
+        return jsonify(ReactsForMessage=results)
 
     def getRepliesByMessageID(self, mID):
         dao = MessageDAO()
@@ -98,7 +98,7 @@ class MessageHandler:
         for row in reply_list:
             result = self.mapToDict(row)
             results.append(result)
-        return jsonify(RepliesForMessage= results)
+        return jsonify(RepliesForMessage=results)
 
     def getOriginalMessageByReplyID(self, rID):
         dao = MessageDAO()
@@ -107,4 +107,4 @@ class MessageHandler:
         result = dao.getOriginalMessageByReplyID(rID)
         result = self.mapToDict(result)
 
-        return jsonify(OriginalMessageForReply= result)
+        return jsonify(OriginalMessageForReply=result)

@@ -18,7 +18,6 @@ class ContactDAO:
         self.data.append(c4)
         self.data.append(c5)
 
-
     def getAllContacts(self, pID):
         for r in self.data:
             if pID == r[0]:

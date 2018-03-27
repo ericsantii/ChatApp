@@ -1,5 +1,7 @@
 from flask import jsonify, request
 from dao.person import PersonDAO
+
+
 class PersonHandler:
     def mapToDict(self, row):
         result = {}
@@ -46,11 +48,11 @@ class PersonHandler:
         result = dao.getPersonById(int(args.get('pID')))
         if result is None:
             return jsonify(Error="NOT FOUND"), 404
-        else :
+        else:
             mapped = self.mapToDict(result)
             return jsonify(Person=mapped)
 
-    def CreateNewPerson(self,form):
+    def CreateNewPerson(self, form):
         if len(form) != 4:
             return jsonify(Error="Malformed post request"), 400
         else:
@@ -76,7 +78,7 @@ class PersonHandler:
         for row in groups_list:
             result = self.mapToGroupDict(row)
             results.append(result)
-        return jsonify(GroupsForID= results)
+        return jsonify(GroupsForID=results)
 
     def getReactsByPersonID(self, pID):
         dao = PersonDAO()
@@ -87,5 +89,4 @@ class PersonHandler:
         for row in reacts_list:
             result = self.mapToReactDict(row)
             results.append(result)
-        return jsonify(ReactsForPerson= results)
-
+        return jsonify(ReactsForPerson=results)
