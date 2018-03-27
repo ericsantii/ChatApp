@@ -43,9 +43,9 @@ class PersonHandler:
             mapped_result.append(self.mapToDict(r))
         return jsonify(Person=mapped_result)
 
-    def getPersonById(self, args):
+    def getPersonById(self, pID):
         dao = PersonDAO()
-        result = dao.getPersonById(int(args.get('pID')))
+        result = dao.getPersonById(pID)
         if result is None:
             return jsonify(Error="NOT FOUND"), 404
         else:

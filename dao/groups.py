@@ -32,7 +32,7 @@ class GroupDAO:
     def delete(self, gID):
         return self.getGroupById(gID)
 
-    def getOwnerByGroupId(self):
+    def getOwnerByGroupId(self, gID):
         dao = PersonDAO()
         grouplist = self.getAllGroups()
         mapped_result = []

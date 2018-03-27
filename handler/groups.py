@@ -55,13 +55,15 @@ class GroupHandler:
             mapped = self.mapToDict(result)
             return jsonify(Groups=mapped)
 
-    def getOwnerByGroupId(self, gid):
+    def getOwnerByGroupId(self, gID):
         dao = GroupDAO()
-        owner_list = dao.getOwnerByGroupId()
-        results = []
-        for row in owner_list:
-            results.append(self.build_owner_dict(row))
-        return jsonify(Owners=results)
+        owner_list = dao.getOwnerByGroupId(gID)
+
+        result = dao.getOwnerByGroupId(gID)
+        if result is None:
+            return jsonify(Error="NOT FOUND"), 404
+        result = self.mapToPersonDict(result)
+        return jsonify(Owners=result)
 
     def createNewChatGroup(self, form):
         if form and len(form) == 2:

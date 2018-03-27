@@ -38,25 +38,15 @@ class MessageHandler:
             mapped_result.append(self.mapToDict(r))
         return jsonify(Messages=mapped_result)
 
-    def getMessageById(self, args):
+    def getMessageById(self, mID):
         dao = MessageDAO()
-        result = dao.getMessageById(int(args.get('mID')))
+        result = dao.getMessageById(mID)
         if result == None:
             return jsonify(Error="NOT FOUND"), 404
         else:
             mapped = self.mapToDict(result)
             return jsonify(Messages=mapped)
 
-    def getMessageByGroup(self, gID):
-        dao = MessageDAO()
-        result = dao.getMessageByGroup(gID)
-        if result is None:
-            return jsonify(Error="NOT FOUND"), 404
-        else:
-            mapped_results = []
-            for row in result:
-                mapped_results.append(self.mapToDict(row))
-            return jsonify(Messages=mapped_results)
 
     def CreateNewMessage(self, form):
         if len(form) != 5:
