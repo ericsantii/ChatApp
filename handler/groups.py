@@ -55,7 +55,7 @@ class GroupHandler:
             mapped = self.mapToDict(result)
             return jsonify(Groups=mapped)
 
-    def getOwnerByGroupId(self):
+    def getOwnerByGroupId(self, gid):
         dao = GroupDAO()
         owner_list = dao.getOwnerByGroupId()
         results = []

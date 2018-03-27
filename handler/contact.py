@@ -1,5 +1,6 @@
 from flask import jsonify
-
+from dao.contact import ContactDAO
+from handler.person import PersonHandler
 
 class ContactHandler:
 
@@ -9,27 +10,21 @@ class ContactHandler:
         result['cID'] = row[1]
         return result
 
-    def mapToPersonDict(self, row):
-        result = {}
-        result['pID'] = row[0]
-        result['pFirstName'] = row[1]
-        result['pLastName'] = row[2]
-        result['pPhone'] = row[3]
-        result['pEmail'] = row[4]
-        return result
+    def getAllContacts(self,pID):
+        dao = ContactDAO()
+        result = dao.getAllContacts(pID)
+        if result is None:
+            return jsonify(Error="NOT FOUND"), 404
+        mapped_result = []
+        for r in result:
+            mapped_result.append(self.mapToDict(r))
+        return jsonify(Contact=mapped_result)
 
-    def build_contact_attributes(self, pID, cName):
-        result = {}
-        result['pID'] = pID
-        result['cID'] = cName
-        return result
-
-    def build_owner_dict(self,row):
-        result = {}
-        result['oID'] = row[0]
-        result['oFirstName'] = row[1]
-        result['oLastName'] = row[2]
-        result['oPhone'] = row[3]
-        result['oEmail'] = row[4]
-        return result
-
+    def getConctactInfo(self,pid):
+        dao = ContactDAO()
+        phandler = PersonHandler
+        result = dao.getContactInfo(pid)
+        mapped_result = []
+        for r in result:
+            mapped_result.append(phandler.mapToDict(result))
+        return jsonify(ContactInfo = mapped_result)
