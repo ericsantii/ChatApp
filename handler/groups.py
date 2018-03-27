@@ -65,30 +65,6 @@ class GroupHandler:
         result = self.mapToPersonDict(result)
         return jsonify(Owners=result)
 
-    def createNewChatGroup(self, form):
-        if form and len(form) == 2:
-            gName = form['gName']
-            gOwner = form['gOwner']
-            if gName:
-                dao = GroupDAO()
-                gID = dao.insert(gName, gOwner)
-                result = self.build_group_attributes(gID, gName, gOwner)
-                return jsonify(Group=result), 201
-            else:
-                return jsonify(Error="Malformed post request")
-        else:
-            return jsonify(Error="Malformed post request")
-
-    def deleteChatGroupbyID(self, args):
-        dao = GroupDAO()
-        if not dao.getGroupById(int(args.get('gID'))):
-            return jsonify(Error="Part not found."), 404
-        else:
-            param = int(args.get('gID'))
-            if param:
-                dao.delete(args.get('gID'))
-                return jsonify(DeleteStatus="OK"), 200
-
     def getPeopleByGroupID(self, gID):
         dao = GroupDAO()
         if not dao.getGroupById(gID):
@@ -100,24 +76,3 @@ class GroupHandler:
             results.append(result)
         return jsonify(PeopleGroup=results)
 
-    # def insertGroup(self,form):
-    #     if form and len(form) == 2:
-    #         gid = form['gid']
-    #         gname = form['gname']
-    #         if gid and gname:
-    #             dao = GroupDAO()
-    #             sid = dao.insert(sname, scity, sphone)
-    #             result = {}
-    #             result["sid"] = sid
-    #             result["sname"] = sname
-    #             result["scity"] = scity
-    #             result["sphone"] = sphone
-    #             return jsonify(Supplier=result), 201
-    #         else:
-    #             return jsonify(Error="Malformed post request")
-    #     else:
-    #         return jsonify(Error="Malformed post request")
-    #
-    #     return
-    def deleteGroup(self):
-        return

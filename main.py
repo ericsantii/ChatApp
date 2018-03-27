@@ -10,7 +10,7 @@ app = Flask(__name__)
 # Home Route which the applications starts in
 @app.route('/')
 def home():
-    return "Welcome to PapayaChat App"
+    return "Welcome to Chat App"
 
 
 

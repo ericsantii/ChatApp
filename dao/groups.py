@@ -5,9 +5,9 @@ from dao.person import PersonDAO
 class GroupDAO:
     def __init__(self):
 
-        G1 = [111, 'Los recoge escombros', 1]
-        G2 = [112, 'Fortnite PR', 5]
-        G3 = [113, 'Los RG4L', 10]
+        G1 = [111, 'Group 1', 1]
+        G2 = [112, 'Group 2', 5]
+        G3 = [113, 'Group 3', 10]
 
         self.data = []
         self.data.append(G1)
@@ -23,16 +23,7 @@ class GroupDAO:
                 return r
         return None
 
-    def insert(self, gName, gOwner):
-        gID = 200
-        G4 = [gID, gName, gOwner]
-        self.data.append(G4)
-        return gID
-
-    def delete(self, gID):
-        return self.getGroupById(gID)
-
-    def getOwnerByGroupId(self, gID):
+    def getOwnerByGroupId(self):
         dao = PersonDAO()
         grouplist = self.getAllGroups()
         mapped_result = []
