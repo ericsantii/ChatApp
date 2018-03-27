@@ -84,8 +84,19 @@ class GroupHandler:
         else:
             param = int(args.get('gID'))
             if param:
-                dao.delete()
+                dao.delete(args.get('gID'))
                 return jsonify(DeleteStatus="OK"), 200
+
+    def getPeopleByGroupID(self, gID):
+        dao = GroupDAO()
+        if not dao.getGroupById(gID):
+            return jsonify(Error="Group Not Found"), 404
+        person_list = dao.getPeopleByGroupID(gID)
+        results = []
+        for row in person_list:
+            result = self.mapToPersonDict(row)
+            results.append(result)
+        return jsonify(PeopleGroup= results)
 
     # def insertGroup(self,form):
     #     if form and len(form) == 2:

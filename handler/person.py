@@ -19,6 +19,20 @@ class PersonHandler:
         result['pEmail'] = pEmail
         return result
 
+    def mapToGroupDict(self, row):
+        result = {}
+        result['gID'] = row[0]
+        result['gName'] = row[1]
+        result['gOwner'] = row[2]
+        return result
+
+    def mapToReactDict(self, row):
+        result = {}
+        result['mID'] = row[0]
+        result['pID'] = row[1]
+        result['rType'] = row[2]
+        return result
+
     def getAllPersons(self):
         dao = PersonDAO()
         result = dao.getAllPersons()
@@ -52,4 +66,26 @@ class PersonHandler:
                 return jsonify(Person=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
+
+    def getGroupsByPersonID(self, pID):
+        dao = PersonDAO()
+        if not dao.getPersonById(pID):
+            return jsonify(Error="Person Not Found"), 404
+        groups_list = dao.getGroupsByPersonID(pID)
+        results = []
+        for row in groups_list:
+            result = self.mapToGroupDict(row)
+            results.append(result)
+        return jsonify(GroupsForID= results)
+
+    def getReactsByPersonID(self, pID):
+        dao = PersonDAO()
+        if not dao.getPersonById(pID):
+            return jsonify(Error="Person Not Found"), 404
+        reacts_list = dao.getReactsByPersonID(pID)
+        results = []
+        for row in reacts_list:
+            result = self.mapToReactDict(row)
+            results.append(result)
+        return jsonify(ReactsForPerson= results)
 

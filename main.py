@@ -76,6 +76,31 @@ def messageCreate():
         return MessageHandler().CreateNewMessage(request.form)
     return "Please formulate a post request to post a new message in a desired group in the Database"
 
+@app.route('/ChatApp/group/<int:gID>/person', methods=['GET'])
+def getMembersByGroupID(gID):
+    return GroupHandler().getPeopleByGroupID(gID)
+
+@app.route('/ChatApp/person/<int:pID>/groups', methods=['GET'])
+def getGroupsByPersonID(pID):
+    return PersonHandler().getGroupsByPersonID(pID)
+
+@app.route('/ChatApp/person/<int:pID>/reacts', methods=['GET'])
+def getReactsByPersonID(pID):
+    return PersonHandler().getReactsByPersonID(pID)
+
+@app.route('/ChatApp/message/<int:mID>/reacts', methods=['GET'])
+def getReactsByMessageID(mID):
+    return MessageHandler().getReactsByMessageID(mID)
+
+@app.route('/ChatApp/message/<int:mID>/replies', methods=['GET'])
+def getRepliesByMessageID(mID):
+    return MessageHandler().getRepliesByMessageID(mID)
+
+@app.route('/ChatApp/message/<int:mID>/originalMessage', methods=['GET'])
+def getOriginalMessageByReplyID(mID):
+    return MessageHandler().getOriginalMessageByReplyID(mID)
+
+
 
 
 if __name__ == '__main__':
