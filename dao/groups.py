@@ -23,15 +23,6 @@ class GroupDAO:
                 return r
         return None
 
-    def insert(self, gName, gOwner):
-        gID = 200
-        G4 = [gID, gName, gOwner]
-        self.data.append(G4)
-        return gID
-
-    def delete(self, gID):
-        return self.getGroupById(gID)
-
     def getOwnerByGroupId(self):
         dao = PersonDAO()
         grouplist = self.getAllGroups()
