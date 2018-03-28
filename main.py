@@ -3,7 +3,7 @@ from handler.person import PersonHandler
 from handler.groups import GroupHandler
 from handler.message import MessageHandler
 
-app = Flask(__name__)
+main = Flask(__name__)
 
 
 # Home Route which the applications starts in
@@ -106,4 +106,4 @@ def getAllOwners():
 
 
 if __name__ == '__main__':
-    app.run()
+    main.run()
