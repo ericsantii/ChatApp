@@ -1,1 +1,1 @@
-web: gunicorn -w 4 main:ChatApp
+web: gunicorn -w 4 main:main
