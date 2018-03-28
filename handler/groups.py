@@ -50,6 +50,8 @@ class GroupHandler:
     def getAllGroups(self):
         dao = GroupDAO()
         group_list = dao.getAllGroups()
+        if not group_list:
+            return jsonify(Error="Group NOT FOUND"), 404
         result_list = []
         for row in group_list:
             result = self.mapToDict(row)
@@ -60,7 +62,7 @@ class GroupHandler:
         dao = GroupDAO()
         result = dao.getGroupById(gid)
         if result is None:
-            return jsonify(Error="NOT FOUND"), 404
+            return jsonify(Error="Group NOT FOUND"), 404
         else:
             mapped = self.mapToDict(result)
             return jsonify(Group=mapped)
@@ -69,14 +71,14 @@ class GroupHandler:
         dao = GroupDAO()
         result = dao.getOwnerByGroupId(gID)
         if result is None:
-            return jsonify(Error="NOT FOUND"), 404
+            return jsonify(Error="Group NOT FOUND"), 404
         result = self.mapToPersonDict(result)
         return jsonify(Person=result)
 
     def getPeopleByGroupID(self, gID):
         dao = GroupDAO()
         if not dao.getGroupById(gID):
-            return jsonify(Error="Group Not Found"), 404
+            return jsonify(Error="Group NOT FOUND"), 404
         person_list = dao.getPeopleByGroupID(gID)
         results = []
         for row in person_list:
@@ -87,8 +89,10 @@ class GroupHandler:
     def getMessagesByGroupID(self, gID):
         dao = GroupDAO()
         if not dao.getGroupById(gID):
-            return jsonify(Error="Group Not Found"), 404
+            return jsonify(Error="Group NOT FOUND"), 404
         message_list = dao.getMessagesByGroupID(gID)
+        if not message_list:
+            return jsonify(Error="Message NOT FOUND"), 404
         results = []
         for row in message_list:
             result = self.mapToMessageDict(row)
@@ -98,6 +102,8 @@ class GroupHandler:
     def getAllOwners(self):
         dao = GroupDAO();
         ownerList = dao.getAllOwners()
+        if not ownerList:
+            return jsonify(Error="Owner NOT FOUND"), 404
         result = []
         for r in ownerList:
             result.append(self.mapToPersonDict(r))

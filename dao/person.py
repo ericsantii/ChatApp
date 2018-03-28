@@ -37,7 +37,7 @@ class PersonDAO:
             T.append([112, 'Fortnite PR', 5])
             return T
         else:
-            return []
+            return None
 
     def getReactsByPersonID(self, pID):
         if pID == 1:
@@ -55,7 +55,7 @@ class PersonDAO:
             T.append([200, 10, False])
             return T
         else:
-            return []
+            return None
 
     def getMessagesByPersonID(self, pID):
         if pID == 1:
@@ -73,7 +73,7 @@ class PersonDAO:
             T.append([102, 'Llego Santa Claus temprano!! :)', '2017-01-04 09:00:00', 'NULL', 10, 112])
             return T
         else:
-            return []
+            return None
 
     def getContactsByPersonID(self, pID):
         if pID == 1:
@@ -85,11 +85,13 @@ class PersonDAO:
             T.append([10, 'Fernando', 'Ortiz', 'user3', 'uig76r7ofvi', '122-059-9031', 'fernando.ortiz@upr.edu'])
             return T
         else:
-            return []
+            return None
 
     def getAllOwners(self):
         T = []
         T.append(self.P1)
         T.append(self.P2)
         T.append(self.P3)
+        if not T:
+            return None
         return T

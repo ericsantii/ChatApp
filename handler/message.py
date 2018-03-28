@@ -23,6 +23,8 @@ class MessageHandler:
     def getAllMessages(self):
         dao = MessageDAO()
         result = dao.getAllMessages()
+        if not result:
+            return jsonify(Error="Message NOT FOUND"), 404
         mapped_result = []
         for r in result:
             mapped_result.append(self.mapToDict(r))
@@ -30,9 +32,9 @@ class MessageHandler:
 
     def getMessageById(self, mID):
         dao = MessageDAO()
-        result = dao.getMessageById(mID)
-        if result == None:
-            return jsonify(Error="NOT FOUND"), 404
+        result = dao.getMessageById(int(mID))
+        if not result:
+            return jsonify(Error="Message NOT FOUND"), 404
         else:
             mapped = self.mapToDict(result)
             return jsonify(Messages=mapped)
@@ -40,8 +42,10 @@ class MessageHandler:
     def getReactsByMessageID(self, mID):
         dao = MessageDAO()
         if not dao.getMessageById(mID):
-            return jsonify(Error="Message Not Found"), 404
+            return jsonify(Error="Message NOT FOUND"), 404
         reacts_list = dao.getReactsByMessageID(mID)
+        if not reacts_list:
+            return jsonify(Error="React NOT FOUND"), 404
         results = []
         for row in reacts_list:
             result = self.mapToReactDict(row)
@@ -51,8 +55,10 @@ class MessageHandler:
     def getRepliesByMessageID(self, mID):
         dao = MessageDAO()
         if not dao.getMessageById(mID):
-            return jsonify(Error="Message Not Found"), 404
+            return jsonify(Error="Message NOT FOUND"), 404
         reply_list = dao.getRepliesByMessageID(mID)
+        if not reply_list:
+            return jsonify(Error="Reply NOT FOUND"), 404
         results = []
         for row in reply_list:
             result = self.mapToDict(row)
@@ -62,8 +68,10 @@ class MessageHandler:
     def getOriginalMessageByReplyID(self, rID):
         dao = MessageDAO()
         if not dao.getMessageById(rID):
-            return jsonify(Error="Reply Not Found"), 404
+            return jsonify(Error="Reply NOT FOUND"), 404
         result = dao.getOriginalMessageByReplyID(rID)
-        result = self.mapToDict(result)
-
-        return jsonify(Messages=result)
+        if not result:
+            return jsonify(Error="Original Message NOT FOUND"), 404
+        else:
+            result = self.mapToDict(result)
+            return jsonify(Messages=result)

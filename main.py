@@ -44,14 +44,14 @@ def getGroupByID(gID):
 
 # Displays all messages of the database  app
 # Or choose a specific message to display through mID
-@app.route('/ChatApp/group/<int:gID>/messages', methods=['GET'])
+@app.route('/ChatApp/group/<int:gID>/message', methods=['GET'])
 def displayMessagesByGroupID(gID):
     return GroupHandler().getMessagesByGroupID(gID)
 
 
 # Displays all messages of the database  app
 # Or choose a specific message to display through mID
-@app.route('/ChatApp/messages', methods=['GET'])
+@app.route('/ChatApp/message', methods=['GET'])
 def getMessages():
     return MessageHandler().getAllMessages()
 
@@ -60,7 +60,7 @@ def getMessages():
 def getMessageByID(mID):
     return MessageHandler().getMessageById(mID)
 
-@app.route('/ChatApp/person/<int:pID>/messages', methods=['GET'])
+@app.route('/ChatApp/person/<int:pID>/message', methods=['GET'])
 def getMessageByPersonID(pID):
     return PersonHandler().getMessagesByPersonID(pID)
 
@@ -70,7 +70,7 @@ def getMembersByGroupID(gID):
     return GroupHandler().getPeopleByGroupID(gID)
 
 
-@app.route('/ChatApp/person/<int:pID>/groups', methods=['GET'])
+@app.route('/ChatApp/person/<int:pID>/group', methods=['GET'])
 def getGroupsByPersonID(pID):
     return PersonHandler().getGroupsByPersonID(pID)
 
