@@ -12,26 +12,36 @@ def home():
     return "Welcome to Chat App"
 
 
+
+#Person routes
 @app.route('/ChatApp/person', methods=['GET'])
 def getPerson():
     return PersonHandler().getAllPersons()
 
-
-# Displays all persons/users of the database app
-# Or choose a specific person to display through pID
 @app.route('/ChatApp/person/<int:pID>', methods=['GET'])
 def getPersonByID(pID):
     return PersonHandler().getPersonById(pID)
 
 
-# Displays all owners of the chat groups
+
+
+#Group routes
 @app.route('/ChatApp/group/<int:gID>/owner', methods=['GET'])
 def getOwnerByGroupID(gID):
     return GroupHandler().getOwnerByGroupId(gID)
 
+@app.route('/ChatApp/owner', methods=['GET'])
+def getAllOwners():
+    return GroupHandler().getAllOwners()
 
-# Displays all chat groups of the database  app
-# Or choose a specific group to display through gID
+@app.route('/ChatApp/person/<int:pID>/group', methods=['GET'])
+def getGroupsByPersonID(pID):
+    return PersonHandler().getGroupsByPersonID(pID)
+
+@app.route('/ChatApp/group/<int:gID>/person', methods=['GET'])
+def getMembersByGroupID(gID):
+    return GroupHandler().getPeopleByGroupID(gID)
+
 @app.route('/ChatApp/group', methods=['GET'])
 def getGroup():
     return GroupHandler().getAllGroups()
@@ -42,15 +52,13 @@ def getGroupByID(gID):
     return GroupHandler().getGroupById(gID)
 
 
-# Displays all messages of the database  app
-# Or choose a specific message to display through mID
+
+#Messaging routes
 @app.route('/ChatApp/group/<int:gID>/message', methods=['GET'])
 def displayMessagesByGroupID(gID):
     return GroupHandler().getMessagesByGroupID(gID)
 
 
-# Displays all messages of the database  app
-# Or choose a specific message to display through mID
 @app.route('/ChatApp/message', methods=['GET'])
 def getMessages():
     return MessageHandler().getAllMessages()
@@ -65,15 +73,9 @@ def getMessageByPersonID(pID):
     return PersonHandler().getMessagesByPersonID(pID)
 
 
-@app.route('/ChatApp/group/<int:gID>/person', methods=['GET'])
-def getMembersByGroupID(gID):
-    return GroupHandler().getPeopleByGroupID(gID)
 
 
-@app.route('/ChatApp/person/<int:pID>/group', methods=['GET'])
-def getGroupsByPersonID(pID):
-    return PersonHandler().getGroupsByPersonID(pID)
-
+#React routes
 
 @app.route('/ChatApp/person/<int:pID>/reacts', methods=['GET'])
 def getReactsByPersonID(pID):
@@ -85,6 +87,9 @@ def getReactsByMessageID(mID):
     return MessageHandler().getReactsByMessageID(mID)
 
 
+
+#Reply routes
+
 @app.route('/ChatApp/message/<int:mID>/replies', methods=['GET'])
 def getRepliesByMessageID(mID):
     return MessageHandler().getRepliesByMessageID(mID)
@@ -95,14 +100,15 @@ def getOriginalMessageByReplyID(mID):
     return MessageHandler().getOriginalMessageByReplyID(mID)
 
 
+
+#Contact routes
+
 @app.route('/ChatApp/person/<int:pID>/contacts', methods=['GET'])
 def getContactsByPersonID(pID):
     return PersonHandler().getContactsByPersonID(pID)
 
 
-@app.route('/ChatApp/owner', methods=['GET'])
-def getAllOwners():
-    return GroupHandler().getAllOwners()
+
 
 
 if __name__ == '__main__':
