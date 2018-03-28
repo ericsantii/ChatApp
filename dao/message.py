@@ -1,11 +1,5 @@
-from dao.person import PersonDAO
-from dao.groups import GroupDAO
-
-
 class MessageDAO:
     def __init__(self):
-        persons = PersonDAO().getAllPersons()
-        groups = GroupDAO().getAllGroups()
         M1 = [3, 'Hola como tu estas?', '1970-01-01 00:00:01', 'NULL', 1, 111]
         M2 = [12, 'Subele el volumen al radio', '2001-12-04 03:02:22', 'https://ibb.co/cN3MkS', 5,
               112]
@@ -28,19 +22,6 @@ class MessageDAO:
                 return r
         return None
 
-    def getMessageByGroup(self, gID):
-        groupExist = GroupDAO().verify(gID)
-        if groupExist:
-            messages = MessageDAO().getAllMessages()
-            messagesOfGroup = []
-            for m in messages:
-                if (m[5] == gID):
-                    messagesOfGroup.append(m)
-            return messagesOfGroup
-        return None
-
-    def verify(self, posterID, groupID):
-        return PersonDAO().verify(int(posterID)) and GroupDAO().verify(int(groupID))
 
     def getReactsByMessageID(self, mID):
         if mID == 3:
