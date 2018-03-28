@@ -12,6 +12,16 @@ class GroupHandler:
         result['gOwner'] = row[2]
         return result
 
+    def mapToMessageDict(self, row):
+        result = {}
+        result['mID'] = row[0]
+        result['mText'] = row[1]
+        result['timedate'] = row[2]
+        result['multimedia'] = row[3]
+        result['posterID'] = row[4]
+        result['groupID'] = row[5]
+        return result
+
     def mapToPersonDict(self, row):
         result = {}
         result['pID'] = row[0]
@@ -44,7 +54,7 @@ class GroupHandler:
         for row in group_list:
             result = self.mapToDict(row)
             result_list.append(result)
-        return jsonify(Groups=result_list)
+        return jsonify(Group=result_list)
 
     def getGroupById(self, gid):
         dao = GroupDAO()
@@ -53,17 +63,15 @@ class GroupHandler:
             return jsonify(Error="NOT FOUND"), 404
         else:
             mapped = self.mapToDict(result)
-            return jsonify(Groups=mapped)
+            return jsonify(Group=mapped)
 
     def getOwnerByGroupId(self, gID):
         dao = GroupDAO()
-        owner_list = dao.getOwnerByGroupId(gID)
-
         result = dao.getOwnerByGroupId(gID)
         if result is None:
             return jsonify(Error="NOT FOUND"), 404
         result = self.mapToPersonDict(result)
-        return jsonify(Owners=result)
+        return jsonify(Person=result)
 
     def getPeopleByGroupID(self, gID):
         dao = GroupDAO()
@@ -74,5 +82,25 @@ class GroupHandler:
         for row in person_list:
             result = self.mapToPersonDict(row)
             results.append(result)
-        return jsonify(PeopleGroup=results)
+        return jsonify(Person=results)
+
+    def getMessagesByGroupID(self, gID):
+        dao = GroupDAO()
+        if not dao.getGroupById(gID):
+            return jsonify(Error="Group Not Found"), 404
+        message_list = dao.getMessagesByGroupID(gID)
+        results = []
+        for row in message_list:
+            result = self.mapToMessageDict(row)
+            results.append(result)
+        return jsonify(Message=results)
+
+    def getAllOwners(self):
+        dao = GroupDAO();
+        ownerList = dao.getAllOwners()
+        result = []
+        for r in ownerList:
+            result.append(self.mapToPersonDict(r))
+        return jsonify(Owner=result)
+
 

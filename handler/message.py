@@ -13,16 +13,6 @@ class MessageHandler:
         result['groupID'] = row[5]
         return result
 
-    def build_message_attributes(self, mID, mText, timedate, multimedia, posterID, groupID):
-        result = {}
-        result['mID'] = mID
-        result['mText'] = mText
-        result['timedate'] = timedate
-        result['multimedia'] = multimedia
-        result['posterID'] = posterID
-        result['groupID'] = groupID
-        return result
-
     def mapToReactDict(self, row):
         result = {}
         result['mID'] = row[0]
@@ -47,27 +37,6 @@ class MessageHandler:
             mapped = self.mapToDict(result)
             return jsonify(Messages=mapped)
 
-
-    def CreateNewMessage(self, form):
-        if len(form) != 5:
-            return jsonify(Error="Malformed post request"), 400
-        else:
-            mText = form['mText']
-            timedate = form['timedate']
-            multimedia = form['multimedia']
-            posterID = form['posterID']
-            groupID = form['groupID']
-            if MessageDAO().verify(posterID, groupID):
-                if (mText or multimedia) and timedate and posterID and groupID:
-                    dao = MessageDAO()
-                    mID = dao.insert(mText, timedate, multimedia, posterID, groupID)
-                    result = self.build_message_attributes(mID, mText, timedate, multimedia, posterID, groupID)
-                    return jsonify(Message=result), 201
-                else:
-                    return jsonify(Error="Unexpected attributes in post request"), 400
-            else:
-                return jsonify(Error="Invalid Message Creation: Person or Group does not exist in the database"), 400
-
     def getReactsByMessageID(self, mID):
         dao = MessageDAO()
         if not dao.getMessageById(mID):
@@ -77,7 +46,7 @@ class MessageHandler:
         for row in reacts_list:
             result = self.mapToReactDict(row)
             results.append(result)
-        return jsonify(ReactsForMessage=results)
+        return jsonify(Reacts=results)
 
     def getRepliesByMessageID(self, mID):
         dao = MessageDAO()
@@ -88,7 +57,7 @@ class MessageHandler:
         for row in reply_list:
             result = self.mapToDict(row)
             results.append(result)
-        return jsonify(RepliesForMessage=results)
+        return jsonify(Messages=results)
 
     def getOriginalMessageByReplyID(self, rID):
         dao = MessageDAO()
@@ -97,4 +66,4 @@ class MessageHandler:
         result = dao.getOriginalMessageByReplyID(rID)
         result = self.mapToDict(result)
 
-        return jsonify(OriginalMessageForReply=result)
+        return jsonify(Messages=result)

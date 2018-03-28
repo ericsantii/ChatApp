@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify, render_template, redirect, url_for
 from handler.person import PersonHandler
 from handler.groups import GroupHandler
 from handler.message import MessageHandler
-from handler.contact import ContactHandler
 
 app = Flask(__name__)
 
@@ -33,7 +32,7 @@ def getOwnerByGroupID(gID):
 
 # Displays all chat groups of the database  app
 # Or choose a specific group to display through gID
-@app.route('/ChatApp/groups', methods=['GET'])
+@app.route('/ChatApp/group', methods=['GET'])
 def getGroup():
     return GroupHandler().getAllGroups()
 
@@ -45,9 +44,9 @@ def getGroupByID(gID):
 
 # Displays all messages of the database  app
 # Or choose a specific message to display through mID
-@app.route('/ChatApp/groups/<int:gID>/messages', methods=['GET'])
+@app.route('/ChatApp/group/<int:gID>/messages', methods=['GET'])
 def displayMessagesByGroupID(gID):
-    return MessageHandler().getMessageByGroupID(gID)
+    return GroupHandler().getMessagesByGroupID(gID)
 
 
 # Displays all messages of the database  app
@@ -60,6 +59,10 @@ def getMessages():
 @app.route('/ChatApp/message/<int:mID>', methods=['GET'])
 def getMessageByID(mID):
     return MessageHandler().getMessageById(mID)
+
+@app.route('/ChatApp/person/<int:pID>/messages', methods=['GET'])
+def getMessageByPersonID(pID):
+    return PersonHandler().getMessagesByPersonID(pID)
 
 
 @app.route('/ChatApp/group/<int:gID>/person', methods=['GET'])
@@ -92,14 +95,14 @@ def getOriginalMessageByReplyID(mID):
     return MessageHandler().getOriginalMessageByReplyID(mID)
 
 
-@app.route('/ChatApp/contacts/<int:pID>', methods=['GET'])
-def displayContacts(pID):
-    return ContactHandler().getAllContacts(pID)
+@app.route('/ChatApp/person/<int:pID>/contacts', methods=['GET'])
+def getContactsByPersonID(pID):
+    return PersonHandler().getContactsByPersonID(pID)
 
 
-@app.route('/ChatApp/contactsinfo/<int:pID>', methods=['GET'])
-def displayContactsInfo(pID):
-    return ContactHandler().getContactInfo(pID)
+@app.route('/ChatApp/owner', methods=['GET'])
+def getAllOwners():
+    return GroupHandler().getAllOwners()
 
 
 if __name__ == '__main__':
