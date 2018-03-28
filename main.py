@@ -13,8 +13,7 @@ def home():
     return "Welcome to Chat App"
 
 
-
-@app.route('/ChatApp/person', methods = ['GET'])
+@app.route('/ChatApp/person', methods=['GET'])
 def getPerson():
     return PersonHandler().getAllPersons()
 
@@ -24,7 +23,6 @@ def getPerson():
 @app.route('/ChatApp/person/<int:pID>', methods=['GET'])
 def getPersonByID(pID):
     return PersonHandler().getPersonById(pID)
-
 
 
 # Displays all owners of the chat groups
@@ -38,6 +36,7 @@ def getOwnerByGroupID(gID):
 @app.route('/ChatApp/groups', methods=['GET'])
 def getGroup():
     return GroupHandler().getAllGroups()
+
 
 @app.route('/ChatApp/group/<int:gID>')
 def getGroupByID(gID):
@@ -56,6 +55,7 @@ def displayMessagesByGroupID(gID):
 @app.route('/ChatApp/messages', methods=['GET'])
 def getMessages():
     return MessageHandler().getAllMessages()
+
 
 @app.route('/ChatApp/message/<int:mID>', methods=['GET'])
 def getMessageByID(mID):
