@@ -16,7 +16,6 @@ class HashTagDAO:
         result = []
         for row in cursor:
             result.append(row)
-        self.closeDB()
         return result
 
     def getHashTagByID(self, hID):
@@ -25,9 +24,7 @@ class HashTagDAO:
         cursor.execute(query, (hID,))
         result = cursor.fetchone()
         if not result:
-            self.closeDB()
             return None
-        self.closeDB()
         return result
 
     def getHashTagList(self, mID):
@@ -37,7 +34,6 @@ class HashTagDAO:
         result = []
         for row in cursor:
             result.append(row)
-        self.closeDB()
 
         return result
 
@@ -48,7 +44,6 @@ class HashTagDAO:
         result = []
         for row in cursor:
             result.append(row)
-        self.closeDB()
         return result
 
     def closeDB(self):

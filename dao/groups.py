@@ -16,7 +16,6 @@ class GroupDAO:
         result = []
         for row in cursor:
             result.append(row)
-        self.closeDB()
         return result
 
     def getGroupById(self, gID):
@@ -25,9 +24,7 @@ class GroupDAO:
         cursor.execute(query, (gID,))
         result = cursor.fetchone()
         if not result:
-            self.closeDB()
             return None
-        self.closeDB()
         return result
 
     def getOwnerByGroupId(self, gID):
@@ -36,9 +33,7 @@ class GroupDAO:
         cursor.execute(query, (gID,))
         result = cursor.fetchone()
         if not result:
-            self.closeDB()
             return None
-        self.closeDB()
         return result
 
     def getMessagesByGroupID(self, gID):
@@ -48,7 +43,6 @@ class GroupDAO:
         result = []
         for row in cursor:
             result.append(row)
-        self.closeDB()
         return result
 
     def getPeopleByGroupID(self, gID):
@@ -58,7 +52,6 @@ class GroupDAO:
         result = []
         for row in cursor:
             result.append(row)
-        self.closeDB()
         return result
 
     def getAllOwners(self):
@@ -68,8 +61,6 @@ class GroupDAO:
         result = []
         for row in cursor:
             result.append(row)
-            self.closeDB()
-        self.closeDB()
         return result
 
     def closeDB(self):
