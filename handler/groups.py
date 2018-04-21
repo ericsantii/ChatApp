@@ -9,7 +9,7 @@ class GroupHandler:
         result = {}
         result['gID'] = row[0]
         result['gName'] = row[1]
-        result['gOwner'] = row[2]
+        result['pID'] = row[2]
         return result
 
     def mapToMessageDict(self, row):
@@ -18,8 +18,8 @@ class GroupHandler:
         result['mText'] = row[1]
         result['timedate'] = row[2]
         result['multimedia'] = row[3]
-        result['posterID'] = row[4]
-        result['groupID'] = row[5]
+        result['pID'] = row[4]
+        result['gID'] = row[5]
         return result
 
     def mapToPersonDict(self, row):
@@ -27,24 +27,28 @@ class GroupHandler:
         result['pID'] = row[0]
         result['pFirstName'] = row[1]
         result['pLastName'] = row[2]
-        result['pPhone'] = row[3]
-        result['pEmail'] = row[4]
+        result['username'] = row[3]
+        result['password'] = row[4]
+        result['pPhone'] = row[5]
+        result['pEmail'] = row[6]
         return result
 
     def build_group_attributes(self, gID, gName, gOwner):
         result = {}
         result['gID'] = gID
         result['gName'] = gName
-        result['gOwner'] = gOwner
+        result['pID'] = gOwner
         return result
 
     def build_owner_dict(self, row):
         result = {}
-        result['oID'] = row[0]
-        result['oFirstName'] = row[1]
-        result['oLastName'] = row[2]
-        result['oPhone'] = row[3]
-        result['oEmail'] = row[4]
+        result['pID'] = row[0]
+        result['pFirstName'] = row[1]
+        result['pLastName'] = row[2]
+        result['username'] = row[3]
+        result['password'] = row[4]
+        result['pPhone'] = row[5]
+        result['pEmail'] = row[6]
         return result
 
     def getAllGroups(self):

@@ -1,10 +1,10 @@
 class MessageDAO:
     def __init__(self):
         M1 = [3, 'Hola como tu estas?', '1970-01-01 00:00:01', 'NULL', 1, 111]
-        M2 = [12, 'Subele el volumen al radio', '2001-12-04 03:02:22', 'https://ibb.co/cN3MkS', 5,112]
-        M3 = [53, 'Ahahahaha lol!', '2018-01-04 10:30:10', 'NULL', 10, 112]
-        M4 = [102, 'Llego Santa Claus temprano!! :)', '2017-01-04 09:00:00', 'NULL', 10, 112]
-        M5 = [209, 'Eres una bestia en ICOM5016', '2010-01-04 02:34:07', 'NULL', 5, 113]
+        M2 = [12, 'Subele el volumen al radio #Sobrevivi', '2001-12-04 03:02:22', 'https://ibb.co/cN3MkS', 5,112]
+        M3 = [53, 'Ahahahaha lol!', '2018-01-04 10:30:10#TeamRubio', 'NULL', 10, 112]
+        M4 = [102, 'Llego Santa Claus temprano!!#Sobrevivi :)', '2017-01-04 09:00:00', 'NULL', 10, 112]
+        M5 = [209, 'Eres una bestia en ICOM5016 #TeamRubio', '2010-01-04 02:34:07', 'NULL', 5, 113]
         self.data = []
         self.data.append(M1)
         self.data.append(M2)
@@ -39,9 +39,9 @@ class MessageDAO:
             T = []
             T.append([102, 10, True])
             return T
-        elif mID == 200:
+        elif mID == 209:
             T = []
-            T.append([200, 10, False])
+            T.append([209, 10, False])
             return T
         else:
             return None
@@ -72,3 +72,4 @@ class MessageDAO:
 
         else:
             return None
+

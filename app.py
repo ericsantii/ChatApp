@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, render_template, redirect, url_for
 from handler.person import PersonHandler
 from handler.groups import GroupHandler
 from handler.message import MessageHandler
+from handler.hashtag import HashTagHandler
 
 app = Flask(__name__)
 
@@ -21,8 +22,6 @@ def getPerson():
 @app.route('/ChatApp/person/<int:pID>', methods=['GET'])
 def getPersonByID(pID):
     return PersonHandler().getPersonById(pID)
-
-
 
 
 #Group routes
@@ -107,8 +106,18 @@ def getOriginalMessageByReplyID(mID):
 def getContactsByPersonID(pID):
     return PersonHandler().getContactsByPersonID(pID)
 
+#Hashtag Routes
+@app.route('/ChatApp/hashtag',methods=['GET'])
+def getHash():
+    return HashTagHandler().getAllHashTags()
 
+@app.route('/ChatApp/hashtag/<int:hID>', methods=['GET'])
+def getHashByID(hID):
+    return HashTagHandler().getHashTagByID(hID)
 
+@app.route('/ChatApp/message/<int:mID>/hashtag', methods=['GET'])
+def getHashByMessageID(mID):
+    return HashTagHandler().getHashTagsByMessageID(mID)
 
 
 if __name__ == '__main__':
