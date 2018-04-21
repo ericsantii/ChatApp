@@ -1,4 +1,4 @@
-def mapGroupToDict(self, row):
+def mapGroupToDict(row):
     result = {}
     result['gID'] = row[0]
     result['gName'] = row[1]
@@ -6,7 +6,7 @@ def mapGroupToDict(self, row):
     return result
 
 
-def mapMessageToDict(self, row):
+def mapMessageToDict(row):
     result = {}
     result['mID'] = row[0]
     result['mText'] = row[1]
@@ -17,7 +17,7 @@ def mapMessageToDict(self, row):
     return result
 
 
-def mapPersonToDict(self, row):
+def mapPersonToDict(row):
     result = {}
     result['pID'] = row[0]
     result['pFirstName'] = row[1]
@@ -28,21 +28,21 @@ def mapPersonToDict(self, row):
     result['pEmail'] = row[6]
     return result
 
-def mapHashTagToDict(self, row):
+def mapHashTagToDict(row):
     result = {}
     result['hID'] = row[0]
     result['hText'] = row[1]
     result['mID'] = row[2]
     return result
 
-def mapToReactDict(self, row):
+def mapToReactDict(row):
     result = {}
     result['mID'] = row[0]
     result['pID'] = row[1]
     result['rType'] = row[2]
     return result
 
-def mapToCount(self, row):
+def mapToCount(row):
     result = {}
     result['mID'] = row[0]
     result['total'] = row[1]
