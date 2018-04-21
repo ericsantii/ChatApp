@@ -120,3 +120,6 @@ class MessageDAO:
             return None
         self.closeDB()
         return result
+
+    def closeDB(self):
+        self.conn.close()
