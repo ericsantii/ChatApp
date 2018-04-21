@@ -77,32 +77,27 @@ def getMessageByPersonID(pID):
     return PersonHandler().getMessagesByPersonID(pID)
 
 
-@app.route('/ChatApp/message/group/<gID:int>/person/<pID:int>', methods=['GET'])
-def getMessagesPostedByPersoninGroupID(pID, gID):
+@app.route('/ChatApp/message/group/<int:gID>/person/<int:pID>', methods=['GET'])
+def getMessagesPostedByPersoninGroupID(gID, pID):
     return MessageHandler().getMessagesPostedByPersoninGroupID(pID, gID)
 
 
-@app.route('/ChatApp/message/group/<gID:int>/person/<pID:int>', methods=['GET'])
-def getMessagesPostedByPersoninGroupID(pID, gID):
-    return MessageHandler().getMessagesPostedByPersoninGroupID(pID, gID)
-
-
-@app.route('/ChatApp/message/<mID:int>/likes/num', methods=['GET'])
+@app.route('/ChatApp/message/<int:mID>/likes/num', methods=['GET'])
 def getNumofLikesbyMessageID(self, mID):
     return MessageHandler().getNumofLikesbyMessageID(mID)
 
 
-@app.route('/ChatApp/message/<mID:int>/dislikes/num')
+@app.route('/ChatApp/message/<int:mID>/dislikes/num')
 def getNumofDislikesbyMessageID(self, mID):
     return MessageHandler().getNumOfDislikesMessageID(mID)
 
 
-@app.route('/ChatApp/message/<mID:int>/likes/person', methods=['GET'])
+@app.route('/ChatApp/message/<int:mID>/likes/person', methods=['GET'])
 def getPersonWhoLikedMessageID(self, mID):
     return MessageHandler().getPersonWhoLikedMessageID(mID)
 
 
-@app.route('/ChatApp/message/<mID:int>/dislikes/person', methods=['GET'])
+@app.route('/ChatApp/message/<int:mID>/dislikes/person', methods=['GET'])
 def getPersonWhoDisikedMessageID(self, mID):
     return MessageHandler().getPersonWhoDisikedMessageID(mID)
 
