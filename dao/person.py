@@ -14,6 +14,7 @@ class PersonDAO:
         result = []
         for row in cursor:
             result.append(row)
+        self.closeDB()
         return result
 
     def getPersonById(self, pid):
@@ -22,7 +23,9 @@ class PersonDAO:
         cursor.execute(query, (pid,))
         result = cursor.fetchone()
         if not result:
+            self.closeDB()
             return None
+        self.closeDB()
         return result
 
     def getGroupsByPersonID(self, pID):
@@ -32,6 +35,7 @@ class PersonDAO:
         result = []
         for row in cursor:
             result.append(row)
+        self.closeDB()
         return result
 
     def getReactsByPersonID(self, pID):
@@ -41,6 +45,7 @@ class PersonDAO:
         result = []
         for row in cursor:
             result.append(row)
+        self.closeDB()
         return result
 
     def getMessagesByPersonID(self, pID):
@@ -50,6 +55,7 @@ class PersonDAO:
         result = []
         for row in cursor:
             result.append(row)
+        self.closeDB()
         return result
 
     def getContactsByPersonID(self, pID):
@@ -59,6 +65,8 @@ class PersonDAO:
         result = []
         for row in cursor:
             result.append(row)
+        self.closeDB()
         return result
 
-
+    def closeDB(self):
+        self.conn.close()

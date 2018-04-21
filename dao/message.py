@@ -16,6 +16,7 @@ class MessageDAO:
         result = []
         for row in cursor:
             result.append(row)
+        self.closeDB()
         return result
 
     def getMessageById(self, mID):
@@ -24,7 +25,10 @@ class MessageDAO:
         cursor.execute(query, (mID,))
         result = cursor.fetchone()
         if not result:
+            self.closeDB()
             return None
+
+        self.closeDB()
         return result
 
     def getReactsByMessageID(self, mID):
@@ -34,6 +38,7 @@ class MessageDAO:
         result = []
         for row in cursor:
             result.append(row)
+        self.closeDB()
         return result
 
     def getRepliesByMessageID(self, mID):
@@ -43,6 +48,7 @@ class MessageDAO:
         result = []
         for row in cursor:
             result.append(row)
+        self.closeDB()
         return result
 
     def getOriginalMessageByReplyID(self, rID):
@@ -51,7 +57,9 @@ class MessageDAO:
         cursor.execute(query, (rID,))
         result = cursor.fetchone()
         if not result:
+            self.closeDB()
             return None
+        self.closeDB()
         return result
 
     ###############
@@ -63,7 +71,9 @@ class MessageDAO:
         cursor.execute(query, (mID, True))
         result = cursor.fetchone()
         if not result:
+            self.closeDB()
             return None
+        self.closeDB()
         return result
 
     def getNumofDislikesbyMessageID(self, mID):
@@ -72,7 +82,9 @@ class MessageDAO:
         cursor.execute(query, (mID, False))
         result = cursor.fetchone()
         if not result:
+            self.closeDB()
             return None
+        self.closeDB()
         return result
 
     def getPersonWhoLikedMessageID(self, mID):
@@ -81,7 +93,9 @@ class MessageDAO:
         cursor.execute(query, (True, mID,))
         result = []
         for row in cursor:
+            self.closeDB()
             return None
+        self.closeDB()
         return result
 
     def getPersonWhoDislikedMessageID(self, mID):
@@ -91,7 +105,9 @@ class MessageDAO:
         cursor.execute(query, (False, mID,))
         result = []
         for row in cursor:
+            self.closeDB()
             return None
+        self.closeDB()
         return result
 
     def getMessagesPostedByPersoninGroupID(self, mID, gID):
@@ -100,5 +116,7 @@ class MessageDAO:
         cursor.execute(query, (mID, gID))
         result = []
         for row in cursor:
+            self.closeDB()
             return None
+        self.closeDB()
         return result
