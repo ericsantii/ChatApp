@@ -135,6 +135,17 @@ def getOriginalMessageByReplyID(mID):
 def getContactsByPersonID(pID):
     return PersonHandler().getContactsByPersonID(pID)
 
+@app.route('/ChatApp/hashtag',methods=['GET'])
+def getHash():
+    return HashTagHandler().getAllHashTags()
+
+@app.route('/ChatApp/hashtag/<int:hID>', methods=['GET'])
+def getHashByID(hID):
+    return HashTagHandler().getHashTagByID(hID)
+
+@app.route('/ChatApp/message/<int:mID>/hashtag', methods=['GET'])
+def getHashByMessageID(mID):
+    return HashTagHandler().getHashTagsByMessageID(mID)
 
 if __name__ == '__main__':
     app.run()
