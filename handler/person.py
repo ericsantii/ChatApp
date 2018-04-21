@@ -8,8 +8,10 @@ class PersonHandler:
         result['pID'] = row[0]
         result['pFirstName'] = row[1]
         result['pLastName'] = row[2]
-        result['pPhone'] = row[3]
-        result['pEmail'] = row[4]
+        result['username'] = row[3]
+        result['password'] = row[4]
+        result['pPhone'] = row[5]
+        result['pEmail'] = row[6]
         return result
 
     def mapToMessageDict(self, row):
@@ -18,15 +20,15 @@ class PersonHandler:
         result['mText'] = row[1]
         result['timedate'] = row[2]
         result['multimedia'] = row[3]
-        result['posterID'] = row[4]
-        result['groupID'] = row[5]
+        result['pID'] = row[4]
+        result['gID'] = row[5]
         return result
 
     def mapToGroupDict(self, row):
         result = {}
         result['gID'] = row[0]
         result['gName'] = row[1]
-        result['gOwner'] = row[2]
+        result['pID'] = row[2]
         return result
 
     def mapToReactDict(self, row):

@@ -10,8 +10,8 @@ class MessageHandler:
         result['mText'] = row[1]
         result['timedate'] = row[2]
         result['multimedia'] = row[3]
-        result['posterID'] = row[4]
-        result['groupID'] = row[5]
+        result['pID'] = row[4]
+        result['gID'] = row[5]
         return result
 
     def mapToReactDict(self, row):
