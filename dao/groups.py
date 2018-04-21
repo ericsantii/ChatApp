@@ -1,14 +1,15 @@
+import psycopg2
+
+from config.dbconfig import pg_config
+
+
 class GroupDAO:
     def __init__(self):
 
-        G1 = [111, 'Group 1', 1]
-        G2 = [112, 'Group 2', 5]
-        G3 = [113, 'Group 3', 10]
-
-        self.data = []
-        self.data.append(G1)
-        self.data.append(G2)
-        self.data.append(G3)
+        connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'],
+                                                            pg_config['user'],
+                                                            pg_config['passwd'])
+        self.conn = psycopg2._connect(connection_url)
 
     def getAllGroups(self):
         cursor = self.conn.cursor()

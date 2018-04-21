@@ -139,9 +139,13 @@ def getContactsByPersonID(pID):
 
 
 
+#Hashtag Routes
 @app.route('/ChatApp/hashtag',methods=['GET'])
 def getHash():
-    return HashTagHandler().getAllHashTags()
+    if len(request.args) > 0:
+        return HashTagHandler().getMessageByHashtag(request.args)
+    else:
+        return HashTagHandler().getAllHashTags()
 
 @app.route('/ChatApp/hashtag/<int:hID>', methods=['GET'])
 def getHashByID(hID):

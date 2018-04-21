@@ -1,32 +1,48 @@
+import psycopg2
+
+from config.dbconfig import pg_config
 
 
 class HashTagDAO:
     def __init__(self):
-        H1 = [1, 'TeamRubio',3]
-        H2 = [2, 'Sobrevivi',12]
-        H3 = [3, 'TeamRubio', 53]
-        H4 = [4, 'Sobrevivi', 102]
-        H5 = [5, 'TeamRubio', 209]
 
-        self.data = []
-        self.data.append(H1)
-        self.data.append(H2)
-        self.data.append(H3)
-        self.data.append(H4)
-        self.data.append(H5)
+        connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'],
+                                                            pg_config['user'],
+                                                            pg_config['passwd'])
+        self.conn = psycopg2._connect(connection_url)
 
-    def getAllHashsTags(self):
-        return self.data
-
-    def getHashTagByID(self,hID):
-        for r in self.data:
-            if hID == r[0]:
-                return r
-        return None
-
-    def getHashTagList(self,mID):
+    def getAllHashTags(self):
+        cursor = self.conn.cursor()
+        query = "select * from HashTag;"
+        cursor.execute(query, )
         result = []
-        for r in self.data:
-            if r[2] == mID:
-                result.append(r)
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getHashTagByID(self, hID):
+        cursor = self.conn.cursor()
+        query = "select * from HashTag where hID = %s;"
+        cursor.execute(query, (hID,))
+        result = cursor.fetchone()
+        if not result:
+            return None
+        return result
+
+    def getHashTagList(self, mID):
+        cursor = self.conn.cursor()
+        query = "select * from HashTag where mID = %s;"
+        cursor.execute(query, (mID,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getMessageByHashTag(self, text):
+        cursor = self.conn.cursor()
+        query = "select mID, mText, timedate, multimedia, pID, gID from message as m natural inner join contains as c natural inner join hashtag where hText = %s;"
+        cursor.execute(query, (text,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result

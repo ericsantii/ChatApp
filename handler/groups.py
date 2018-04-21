@@ -2,54 +2,11 @@ from flask import jsonify
 
 from dao.groups import GroupDAO
 
+from mapToDictFunctions import mapGroupToDict, mapMessageToDict, mapPersonToDict
+
 
 class GroupHandler:
 
-    def mapToDict(self, row):
-        result = {}
-        result['gID'] = row[0]
-        result['gName'] = row[1]
-        result['pID'] = row[2]
-        return result
-
-    def mapToMessageDict(self, row):
-        result = {}
-        result['mID'] = row[0]
-        result['mText'] = row[1]
-        result['timedate'] = row[2]
-        result['multimedia'] = row[3]
-        result['pID'] = row[4]
-        result['gID'] = row[5]
-        return result
-
-    def mapToPersonDict(self, row):
-        result = {}
-        result['pID'] = row[0]
-        result['pFirstName'] = row[1]
-        result['pLastName'] = row[2]
-        result['username'] = row[3]
-        result['password'] = row[4]
-        result['pPhone'] = row[5]
-        result['pEmail'] = row[6]
-        return result
-
-    def build_group_attributes(self, gID, gName, gOwner):
-        result = {}
-        result['gID'] = gID
-        result['gName'] = gName
-        result['pID'] = gOwner
-        return result
-
-    def build_owner_dict(self, row):
-        result = {}
-        result['pID'] = row[0]
-        result['pFirstName'] = row[1]
-        result['pLastName'] = row[2]
-        result['username'] = row[3]
-        result['password'] = row[4]
-        result['pPhone'] = row[5]
-        result['pEmail'] = row[6]
-        return result
 
     def getAllGroups(self):
         dao = GroupDAO()
@@ -58,7 +15,7 @@ class GroupHandler:
             return jsonify(Error="Group NOT FOUND"), 404
         result_list = []
         for row in group_list:
-            result = self.mapToDict(row)
+            result = mapGroupToDict(row)
             result_list.append(result)
         return jsonify(Group=result_list)
 
@@ -68,7 +25,7 @@ class GroupHandler:
         if result is None:
             return jsonify(Error="Group NOT FOUND"), 404
         else:
-            mapped = self.mapToDict(result)
+            mapped = mapGroupToDict(result)
             return jsonify(Group=mapped)
 
     def getOwnerByGroupId(self, gID):
@@ -76,7 +33,7 @@ class GroupHandler:
         result = dao.getOwnerByGroupId(gID)
         if result is None:
             return jsonify(Error="Group NOT FOUND"), 404
-        result = self.mapToPersonDict(result)
+        result = mapPersonToDict(result)
         return jsonify(Person=result)
 
     def getPeopleByGroupID(self, gID):
@@ -86,7 +43,7 @@ class GroupHandler:
         person_list = dao.getPeopleByGroupID(gID)
         results = []
         for row in person_list:
-            result = self.mapToPersonDict(row)
+            result = mapPersonToDict(row)
             results.append(result)
         return jsonify(Person=results)
 
@@ -99,7 +56,7 @@ class GroupHandler:
             return jsonify(Error="Message NOT FOUND"), 404
         results = []
         for row in message_list:
-            result = self.mapToMessageDict(row)
+            result = mapMessageToDict(row)
             results.append(result)
         return jsonify(Message=results)
 
@@ -110,7 +67,7 @@ class GroupHandler:
             return jsonify(Error="Owner NOT FOUND"), 404
         result = []
         for r in ownerList:
-            result.append(self.mapToPersonDict(r))
+            result.append(mapPersonToDict(r))
         return jsonify(Owner=result)
 
 

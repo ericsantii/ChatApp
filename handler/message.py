@@ -1,31 +1,10 @@
 from flask import jsonify, request
 from dao.message import MessageDAO
 from dao.groups import GroupDAO
+from mapToDictFunctions import mapToReactDict, mapToCount, mapMessageToDict
 
 
 class MessageHandler:
-    def mapToDict(self, row):
-        result = {}
-        result['mID'] = row[0]
-        result['mText'] = row[1]
-        result['timedate'] = row[2]
-        result['multimedia'] = row[3]
-        result['pID'] = row[4]
-        result['gID'] = row[5]
-        return result
-
-    def mapToReactDict(self, row):
-        result = {}
-        result['mID'] = row[0]
-        result['pID'] = row[1]
-        result['rType'] = row[2]
-        return result
-
-    def mapToCount(self, row):
-        result = {}
-        result['mID'] = row[0]
-        result['total'] = row[1]
-        return result
 
     def getAllMessages(self):
         dao = MessageDAO()
@@ -34,7 +13,7 @@ class MessageHandler:
             return jsonify(Error="Message NOT FOUND"), 404
         mapped_result = []
         for r in result:
-            mapped_result.append(self.mapToDict(r))
+            mapped_result.append(mapMessageToDict(r))
         return jsonify(Messages=mapped_result)
 
     def getMessageById(self, mID):
@@ -43,7 +22,7 @@ class MessageHandler:
         if not result:
             return jsonify(Error="Message NOT FOUND"), 404
         else:
-            mapped = self.mapToDict(result)
+            mapped = mapMessageToDict(result)
             return jsonify(Messages=mapped)
 
     def getReactsByMessageID(self, mID):
@@ -55,7 +34,7 @@ class MessageHandler:
             return jsonify(Error="React NOT FOUND"), 404
         results = []
         for row in reacts_list:
-            result = self.mapToReactDict(row)
+            result = mapToReactDict(row)
             results.append(result)
         return jsonify(Reacts=results)
 
@@ -68,7 +47,7 @@ class MessageHandler:
             return jsonify(Error="Reply NOT FOUND"), 404
         results = []
         for row in reply_list:
-            result = self.mapToDict(row)
+            result = mapMessageToDict(row)
             results.append(result)
         return jsonify(Messages=results)
 
@@ -80,7 +59,7 @@ class MessageHandler:
         if not result:
             return jsonify(Error="Original Message NOT FOUND"), 404
         else:
-            result = self.mapToDict(result)
+            result = mapMessageToDict(result)
             return jsonify(Messages=result)
 
     def getMessagesPostedByPersoninGroupID(self, mID, gID):
@@ -93,7 +72,7 @@ class MessageHandler:
             return jsonify(Error="Group NOT FOUND"), 404
         message_list = dao.getMessagesPostedByPersoninGroupID(mID, gID)
         for row in message_list:
-            result = self.mapToDict(row)
+            result = mapMessageToDict(row)
             results.append(result)
         return jsonify(Messages=results)
 
@@ -104,7 +83,7 @@ class MessageHandler:
             return jsonify(Error="Message NOT FOUND"), 404
         list = dao.getNumofLikesbyMessageID(mID)
         for row in list:
-            result = self.mapToCount(row)
+            result = mapToCount(row)
             results.append(result)
         return jsonify(Messages=results)
 
@@ -117,7 +96,7 @@ class MessageHandler:
             return jsonify(Error="React NOT FOUND"), 404
         results = []
         for row in reacts_list:
-            result = self.mapToReactDict(row)
+            result = mapToReactDict(row)
             results.append(result)
         return jsonify(Reacts=results)
 
@@ -130,7 +109,7 @@ class MessageHandler:
             return jsonify(Error="React NOT FOUND"), 404
         results = []
         for row in reacts_list:
-            result = self.mapToReactDict(row)
+            result = mapToReactDict(row)
             results.append(result)
         return jsonify(Reacts=results)
 
@@ -141,6 +120,6 @@ class MessageHandler:
             return jsonify(Error="Message NOT FOUND"), 404
         list = dao.getNumofDislikesbyMessageID(mID)
         for row in list:
-            result = self.mapToCount(row)
+            result = mapToCount(row)
             results.append(result)
         return jsonify(Messages=results)

@@ -4,17 +4,6 @@ from config.dbconfig import pg_config
 
 class PersonDAO:
     def __init__(self):
-        P1 = [1, 'Luis', 'Vega', 'user1', '657rfv87tr76', '787-634-1091', 'luis.vega5@upr.edu']
-        P2 = [5, 'Eric', 'Santillana', 'user2', '97yhiup87t', '939-089-1011', 'eric.santillana@upr.edu']
-        P3 = [10, 'Fernando', 'Ortiz', 'user3', 'uig76r7ofvi', '122-059-9031', 'fernando.ortiz@upr.edu']
-        P4 = [50, 'Luisa', 'Vargas', 'user4', 'yuti56r698', '787-777-1791', 'luisa.vargas@upr.edu']
-        P5 = [95, 'Fico', 'Fronte', 'user5', 'rf87g90h', '787-123-4567', 'fico.fronte@gmail.edu']
-        self.data = []
-        self.data.append(P1)
-        self.data.append(P2)
-        self.data.append(P3)
-        self.data.append(P4)
-        self.data.append(P5)
 
         connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'],
                                                             pg_config['user'],

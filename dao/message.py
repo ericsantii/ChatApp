@@ -1,16 +1,15 @@
+import psycopg2
+
+from config.dbconfig import pg_config
+
+
 class MessageDAO:
     def __init__(self):
-        M1 = [3, 'Hola como tu estas?', '1970-01-01 00:00:01', 'NULL', 1, 111]
-        M2 = [12, 'Subele el volumen al radio', '2001-12-04 03:02:22', 'https://ibb.co/cN3MkS', 5, 112]
-        M3 = [53, 'Ahahahaha lol!', '2018-01-04 10:30:10', 'NULL', 10, 112]
-        M4 = [102, 'Llego Santa Claus temprano!! :)', '2017-01-04 09:00:00', 'NULL', 10, 112]
-        M5 = [209, 'Eres una bestia en ICOM5016', '2010-01-04 02:34:07', 'NULL', 5, 113]
-        self.data = []
-        self.data.append(M1)
-        self.data.append(M2)
-        self.data.append(M3)
-        self.data.append(M4)
-        self.data.append(M5)
+
+        connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'],
+                                                            pg_config['user'],
+                                                            pg_config['passwd'])
+        self.conn = psycopg2._connect(connection_url)
 
     def getAllMessages(self):
         cursor = self.conn.cursor()
