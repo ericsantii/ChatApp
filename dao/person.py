@@ -1,3 +1,7 @@
+import psycopg2
+from config.dbconfig import pg_config
+
+
 class PersonDAO:
     def __init__(self):
         P1 = [1, 'Luis', 'Vega', 'user1', '657rfv87tr76', '787-634-1091', 'luis.vega5@upr.edu']
@@ -12,86 +16,63 @@ class PersonDAO:
         self.data.append(P4)
         self.data.append(P5)
 
+        connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'],
+                                                            pg_config['user'],
+                                                            pg_config['passwd'])
+        self.conn = psycopg2._connect(connection_url)
+
     def getAllPersons(self):
-        return self.data
+        cursor = self.conn.cursor()
+        query = "select * from Person;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
-    def getPersonById(self, id):
-        for r in self.data:
-            if id == r[0]:
-                return r
-        return None
-
+    def getPersonById(self, pid):
+        cursor = self.conn.cursor()
+        query = "select * from Person where pID = %s;"
+        cursor.execute(query, (pid,))
+        result = cursor.fetchone()
+        if not result:
+            return None
+        return result
 
     def getGroupsByPersonID(self, pID):
-        if pID == 1:
-            return [[113, 'Los RG4L', 10]]
-        elif pID == 5:
-            T = []
-            T.append([112, 'Fortnite PR', 5])
-            T.append([113, 'Los RG4L', 10])
-            return T
-        elif pID == 10:
-            T = []
-            T.append([111, 'Los recoge escombros', 1])
-            T.append([113, 'Los RG4L', 10])
-            T.append([112, 'Fortnite PR', 5])
-            return T
-        else:
-            return None
+        cursor = self.conn.cursor()
+        query = "select * from ChatGroup natural inner join isMember where pID = %s;"
+        cursor.execute(query, (pID,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
     def getReactsByPersonID(self, pID):
-        if pID == 1:
-            return [[3, 1, True]]
-        elif pID == 5:
-            T = []
-            T.append([12, 5, False])
-            T.append([52, 'Los RG4L', True])
-            return T
-        elif pID == 10:
-            T = []
-            T.append([12, 10, True])
-            T.append([53, 10, False])
-            T.append([102, 10, True])
-            T.append([200, 10, False])
-            return T
-        else:
-            return None
+        cursor = self.conn.cursor()
+        query = "select * from react natural inner join Person natural inner join Message where pID = %s;"
+        cursor.execute(query, (pID,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
     def getMessagesByPersonID(self, pID):
-        if pID == 1:
-            T = []
-            T.append([3, 'Hola como tu estas?', '1970-01-01 00:00:01', 'NULL', 1, 111])
-            return T
-        elif pID == 5:
-            T = []
-            T.append([12, 'Subele el volumen al radio', '2001-12-04 03:02:22', 'https://ibb.co/cN3MkS', 5, 112])
-            T.append([209, 'Eres una bestia en ICOM5016', '2010-01-04 02:34:07', 'NULL', 5, 113])
-            return T
-        elif pID == 10:
-            T = []
-            T.append([53, 'Ahahahaha lol!', '2018-01-04 10:30:10', 'NULL', 10, 112])
-            T.append([102, 'Llego Santa Claus temprano!! :)', '2017-01-04 09:00:00', 'NULL', 10, 112])
-            return T
-        else:
-            return None
+        cursor = self.conn.cursor()
+        query = "select * from Messages where pID = %s;"
+        cursor.execute(query, (pID,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
     def getContactsByPersonID(self, pID):
-        if pID == 1:
-            T = []
-            T.append([5, 'Eric', 'Santillana', 'user2', '97yhiup87t', '939-089-1011', 'eric.santillana@upr.edu'])
-            return T
-        elif pID == 5:
-            T = []
-            T.append([10, 'Fernando', 'Ortiz', 'user3', 'uig76r7ofvi', '122-059-9031', 'fernando.ortiz@upr.edu'])
-            return T
-        else:
-            return None
+        cursor = self.conn.cursor()
+        query = "select * from Person natural inner join hasContact where userID = %s;"
+        cursor.execute(query, (pID,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
-    def getAllOwners(self):
-        T = []
-        T.append(self.P1)
-        T.append(self.P2)
-        T.append(self.P3)
-        if not T:
-            return None
-        return T
+

@@ -9,6 +9,11 @@ app = Flask(__name__)
 # Home Route which the applications starts in
 @app.route('/')
 def home():
+
+
+
+
+
     return "Welcome to Chat App"
 
 
@@ -21,9 +26,6 @@ def getPerson():
 @app.route('/ChatApp/person/<int:pID>', methods=['GET'])
 def getPersonByID(pID):
     return PersonHandler().getPersonById(pID)
-
-
-
 
 #Group routes
 @app.route('/ChatApp/group/<int:gID>/owner', methods=['GET'])

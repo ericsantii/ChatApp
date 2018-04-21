@@ -13,62 +13,86 @@ class MessageDAO:
         self.data.append(M5)
 
     def getAllMessages(self):
-        return self.data
+        cursor = self.conn.cursor()
+        query = "select * from message;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
-    def getMessageById(self, id):
-        for r in self.data:
-            if id == r[0]:
-                return r
-        return None
+    def getMessageById(self, mID):
+        cursor = self.conn.cursor()
+        query = "select * from message where mID = %s;"
+        cursor.execute(query, (mID,))
+        result = cursor.fetchone()
+        if not result:
+            return None
+        return result
 
 
     def getReactsByMessageID(self, mID):
-        if mID == 3:
-            return [[3, 1, True]]
-        elif mID == 12:
-            T = []
-            T.append([12, 5, False])
-            T.append([12, 10, True])
-            return T
-        elif mID == 53:
-            T = []
-            T.append([53, 10, False])
-
-            return T
-        elif mID == 102:
-            T = []
-            T.append([102, 10, True])
-            return T
-        elif mID == 200:
-            T = []
-            T.append([200, 10, False])
-            return T
-        else:
-            return None
+        cursor = self.conn.cursor()
+        query = "select * from react where mID = %s;"
+        cursor.execute(query, (mID,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
     def getRepliesByMessageID(self, mID):
-        if mID == 3:
-            T = []
-            T.append([12, 'Entra al cuarto y subele el volumen al radio', '2001-12-04 03:02:22', 'https://ibb.co/cN3MkS', 5,112])
-            return T
-        elif mID == 12:
-            T = []
-            T.append([53, 'Ahahahaha lol!', '2018-01-04 10:30:10', 'NULL', 10, 112])
-            T.append([102, 'Llego Santa Claus temprano!! :)', '2017-01-04 09:00:00', 'NULL', 10, 112])
-
-            return T
-
-        else:
-            return None
+        cursor = self.conn.cursor()
+        query = "select mID, mText, timedate, multimedia, pID, gID from message as m, reply as r where m.mID = r.replyMessageID and r.originalMessageID = %s;"
+        cursor.execute(query, (mID,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
     def getOriginalMessageByReplyID(self, rID):
-        if rID == 12:
-            result = [3, 'Hola bebe como tu estas?', '1970-01-01 00:00:01', 'NULL', 1, 111]
-            return result
-
-        elif rID == 53 or rID == 102:
-            result = [12, 'Entra al cuarto y subele el volumen al radio', '2001-12-04 03:02:22','https://ibb.co/cN3MkS', 5, 112]
-            return result
-
-        else:
+        cursor = self.conn.cursor()
+        query = "select mID, mText, timedate, multimedia, pID, gID from message as m, reply as r where m.mID = r.originalMessageID and r.replyMessageID = %s;"
+        cursor.execute(query, (rID,))
+        result = cursor.fetchone()
+        if not result:
             return None
+        return result
+
+    ###############
+    #CHECK RETURN
+
+    def getNumofLikesbyMessageID(self, mID):
+        cursor = self.conn.cursor()
+        query = "select count(*) as NumOfLikes from react where mID = %s and rType = %s;"
+        cursor.execute(query, (mID, True))
+        result = cursor.fetchone()
+        if not result:
+            return None
+        return result
+
+    def getNumofDislikesbyMessageID(self, mID):
+        cursor = self.conn.cursor()
+        query = "select count(*) as NumOfDislikes from react where mID = %s and rType = %s;"
+        cursor.execute(query, (mID, False))
+        result = cursor.fetchone()
+        if not result:
+            return None
+        return result
+
+    def getPersonWhoLikedMessageID(self):
+        cursor = self.conn.cursor()
+        query = "select pID, username, passwd, pFirstName, pLastName, pPhone, pEmail from Person natural inner join react where rType = %s;"
+        cursor.execute(query, (True,))
+        result = []
+        for row in cursor:
+            return None
+        return result
+
+    def getPersonWhoDislikedMessageID(self, mID):
+        cursor = self.conn.cursor()
+        query = "select pID, username, passwd, pFirstName, pLastName, pPhone, pEmail from Person natural inner join react where rType = %s;"
+        cursor.execute(query, (False,))
+        result = []
+        for row in cursor:
+            return None
+        return result
