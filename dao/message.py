@@ -1,7 +1,7 @@
 class MessageDAO:
     def __init__(self):
         M1 = [3, 'Hola como tu estas?', '1970-01-01 00:00:01', 'NULL', 1, 111]
-        M2 = [12, 'Subele el volumen al radio', '2001-12-04 03:02:22', 'https://ibb.co/cN3MkS', 5,112]
+        M2 = [12, 'Subele el volumen al radio', '2001-12-04 03:02:22', 'https://ibb.co/cN3MkS', 5, 112]
         M3 = [53, 'Ahahahaha lol!', '2018-01-04 10:30:10', 'NULL', 10, 112]
         M4 = [102, 'Llego Santa Claus temprano!! :)', '2017-01-04 09:00:00', 'NULL', 10, 112]
         M5 = [209, 'Eres una bestia en ICOM5016', '2010-01-04 02:34:07', 'NULL', 5, 113]
@@ -29,7 +29,6 @@ class MessageDAO:
         if not result:
             return None
         return result
-
 
     def getReactsByMessageID(self, mID):
         cursor = self.conn.cursor()
@@ -59,7 +58,7 @@ class MessageDAO:
         return result
 
     ###############
-    #CHECK RETURN
+    # CHECK RETURN
 
     def getNumofLikesbyMessageID(self, mID):
         cursor = self.conn.cursor()
@@ -79,10 +78,10 @@ class MessageDAO:
             return None
         return result
 
-    def getPersonWhoLikedMessageID(self):
+    def getPersonWhoLikedMessageID(self, mID):
         cursor = self.conn.cursor()
-        query = "select pID, username, passwd, pFirstName, pLastName, pPhone, pEmail from Person natural inner join react where rType = %s;"
-        cursor.execute(query, (True,))
+        query = "select pID, username, passwd, pFirstName, pLastName, pPhone, pEmail from Person natural inner join react where rType = %s and mID = $s;"
+        cursor.execute(query, (True, mID,))
         result = []
         for row in cursor:
             return None
@@ -90,8 +89,18 @@ class MessageDAO:
 
     def getPersonWhoDislikedMessageID(self, mID):
         cursor = self.conn.cursor()
-        query = "select pID, username, passwd, pFirstName, pLastName, pPhone, pEmail from Person natural inner join react where rType = %s;"
-        cursor.execute(query, (False,))
+        query = "select pID, username, passwd, pFirstName, pLastName, pPhone, pEmail " \
+                "from Person natural inner join react where rType = %s and mID = %s;"
+        cursor.execute(query, (False, mID,))
+        result = []
+        for row in cursor:
+            return None
+        return result
+
+    def getMessagesPostedByPersoninGroupID(self, mID, gID):
+        cursor = self.conn.cursor()
+        query = "select mID from Message where mID = %s and gID = %s"
+        cursor.execute(query, (mID, gID))
         result = []
         for row in cursor:
             return None

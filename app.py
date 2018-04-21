@@ -9,40 +9,40 @@ app = Flask(__name__)
 # Home Route which the applications starts in
 @app.route('/')
 def home():
-
-
-
-
-
     return "Welcome to Chat App"
 
 
-
-#Person routes
+# Person routes
 @app.route('/ChatApp/person', methods=['GET'])
 def getPerson():
     return PersonHandler().getAllPersons()
+
 
 @app.route('/ChatApp/person/<int:pID>', methods=['GET'])
 def getPersonByID(pID):
     return PersonHandler().getPersonById(pID)
 
-#Group routes
+
+# Group routes
 @app.route('/ChatApp/group/<int:gID>/owner', methods=['GET'])
 def getOwnerByGroupID(gID):
     return GroupHandler().getOwnerByGroupId(gID)
+
 
 @app.route('/ChatApp/owner', methods=['GET'])
 def getAllOwners():
     return GroupHandler().getAllOwners()
 
+
 @app.route('/ChatApp/person/<int:pID>/group', methods=['GET'])
 def getGroupsByPersonID(pID):
     return PersonHandler().getGroupsByPersonID(pID)
 
+
 @app.route('/ChatApp/group/<int:gID>/person', methods=['GET'])
 def getMembersByGroupID(gID):
     return GroupHandler().getPeopleByGroupID(gID)
+
 
 @app.route('/ChatApp/group', methods=['GET'])
 def getGroup():
@@ -54,8 +54,7 @@ def getGroupByID(gID):
     return GroupHandler().getGroupById(gID)
 
 
-
-#Messaging routes
+# Messaging routes
 @app.route('/ChatApp/group/<int:gID>/message', methods=['GET'])
 def displayMessagesByGroupID(gID):
     return GroupHandler().getMessagesByGroupID(gID)
@@ -70,14 +69,43 @@ def getMessages():
 def getMessageByID(mID):
     return MessageHandler().getMessageById(mID)
 
+
 @app.route('/ChatApp/person/<int:pID>/message', methods=['GET'])
 def getMessageByPersonID(pID):
     return PersonHandler().getMessagesByPersonID(pID)
 
 
+@app.route('/ChatApp/message/group/<gID:int>/person/<pID:int>', methods=['GET'])
+def getMessagesPostedByPersoninGroupID(pID, gID):
+    return MessageHandler().getMessagesPostedByPersoninGroupID(pID, gID)
 
 
-#React routes
+@app.route('/ChatApp/message/group/<gID:int>/person/<pID:int>', methods=['GET'])
+def getMessagesPostedByPersoninGroupID(pID, gID):
+    return MessageHandler().getMessagesPostedByPersoninGroupID(pID, gID)
+
+
+@app.route('/ChatApp/message/<mID:int>/likes/num', methods=['GET'])
+def getNumofLikesbyMessageID(self, mID):
+    return MessageHandler().getNumofLikesbyMessageID(mID)
+
+
+@app.route('/ChatApp/message/<mID:int>/dislikes/num')
+def getNumofDislikesbyMessageID(self, mID):
+    return MessageHandler().getNumOfDislikesMessageID(mID)
+
+
+@app.route('/ChatApp/message/<mID:int>/likes/person', methods=['GET'])
+def getPersonWhoLikedMessageID(self, mID):
+    return MessageHandler().getPersonWhoLikedMessageID(mID)
+
+
+@app.route('/ChatApp/message/<mID:int>/dislikes/person', methods=['GET'])
+def getPersonWhoDisikedMessageID(self, mID):
+    return MessageHandler().getPersonWhoDisikedMessageID(mID)
+
+
+# React routes
 
 @app.route('/ChatApp/person/<int:pID>/reacts', methods=['GET'])
 def getReactsByPersonID(pID):
@@ -89,8 +117,7 @@ def getReactsByMessageID(mID):
     return MessageHandler().getReactsByMessageID(mID)
 
 
-
-#Reply routes
+# Reply routes
 
 @app.route('/ChatApp/message/<int:mID>/replies', methods=['GET'])
 def getRepliesByMessageID(mID):
@@ -102,15 +129,11 @@ def getOriginalMessageByReplyID(mID):
     return MessageHandler().getOriginalMessageByReplyID(mID)
 
 
-
-#Contact routes
+# Contact routes
 
 @app.route('/ChatApp/person/<int:pID>/contacts', methods=['GET'])
 def getContactsByPersonID(pID):
     return PersonHandler().getContactsByPersonID(pID)
-
-
-
 
 
 if __name__ == '__main__':
