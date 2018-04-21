@@ -5,11 +5,9 @@ from config.dbconfig import pg_config
 
 class HashTagDAO:
     def __init__(self):
+        DATABASE_URL = 'postgres://zftpdfatjwqsqn:6392cffdaac746ec46a140c526c4ef71b595543eb05feb5f223bf7ac1a3e323c@ec2-54-225-96-191.compute-1.amazonaws.com:5432/dg5rkiotg2tr8'
+        self.conn = psycopg2._connect(DATABASE_URL)
 
-        connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'],
-                                                            pg_config['user'],
-                                                            pg_config['passwd'])
-        self.conn = psycopg2._connect(connection_url)
 
     def getAllHashTags(self):
         cursor = self.conn.cursor()

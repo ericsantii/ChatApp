@@ -1,7 +1,7 @@
 #Databse configuration information
 
 pg_config = {
-    'user' : 'appusr',
-    'passwd' : 'appusr1',
-    'dbname' : 'appdb'
+    'user' : 'postgres',
+    'passwd' : 'Colegio2014',
+    'dbname' : 'postgres'
 }

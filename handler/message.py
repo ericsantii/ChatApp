@@ -79,7 +79,7 @@ class MessageHandler:
     def getNumofLikesbyMessageID(self, mID):
         dao = MessageDAO()
         results = []
-        if not dao.getMessageById():
+        if not dao.getMessageById(mID):
             return jsonify(Error="Message NOT FOUND"), 404
         list = dao.getNumofLikesbyMessageID(mID)
         for row in list:
