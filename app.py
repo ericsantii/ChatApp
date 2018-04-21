@@ -1,4 +1,6 @@
 from flask import Flask, request, jsonify, render_template, redirect, url_for
+
+from handler.hashtag import HashTagHandler
 from handler.person import PersonHandler
 from handler.groups import GroupHandler
 from handler.message import MessageHandler
@@ -134,6 +136,8 @@ def getOriginalMessageByReplyID(mID):
 @app.route('/ChatApp/person/<int:pID>/contacts', methods=['GET'])
 def getContactsByPersonID(pID):
     return PersonHandler().getContactsByPersonID(pID)
+
+
 
 @app.route('/ChatApp/hashtag',methods=['GET'])
 def getHash():
