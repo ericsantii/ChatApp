@@ -83,22 +83,22 @@ def getMessagesPostedByPersoninGroupID(gID, pID):
 
 
 @app.route('/ChatApp/message/<int:mID>/likes/num', methods=['GET'])
-def getNumofLikesbyMessageID(self, mID):
+def getNumofLikesbyMessageID(mID):
     return MessageHandler().getNumofLikesbyMessageID(mID)
 
 
 @app.route('/ChatApp/message/<int:mID>/dislikes/num')
-def getNumofDislikesbyMessageID(self, mID):
+def getNumofDislikesbyMessageID(mID):
     return MessageHandler().getNumOfDislikesMessageID(mID)
 
 
 @app.route('/ChatApp/message/<int:mID>/likes/person', methods=['GET'])
-def getPersonWhoLikedMessageID(self, mID):
+def getPersonWhoLikedMessageID(mID):
     return MessageHandler().getPersonWhoLikedMessageID(mID)
 
 
 @app.route('/ChatApp/message/<int:mID>/dislikes/person', methods=['GET'])
-def getPersonWhoDisikedMessageID(self, mID):
+def getPersonWhoDisikedMessageID(mID):
     return MessageHandler().getPersonWhoDisikedMessageID(mID)
 
 
