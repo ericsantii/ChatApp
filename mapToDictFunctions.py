@@ -48,6 +48,19 @@ def mapToCount(row):
     result['total'] = row[1]
     return result
 
+def mapMessageInfoToDict(row):
+    result = {}
+    result['pID'] = row[0]
+    result['mID'] = row[1]
+    result['numOfLikes'] = row[2]
+    result['numOfDislikes'] = row[3]
+    result['mText'] = row[4]
+    result['timedate'] = row[5]
+    result['username'] = row[6]
+    result['pFirstName'] = row[7]
+    result['pLastName'] = row[8]
+    return result
+
 
 
 

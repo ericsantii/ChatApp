@@ -25,6 +25,15 @@ class PersonDAO:
             return None
         return result
 
+    def getPersonById(self, username):
+        cursor = self.conn.cursor()
+        query = "select * from Person where username = %s;"
+        cursor.execute(query, (username,))
+        result = cursor.fetchone()
+        if not result:
+            return None
+        return result
+
     def getGroupsByPersonID(self, pID):
         cursor = self.conn.cursor()
         query = "select * from ChatGroup natural inner join isMember where pID = %s;"

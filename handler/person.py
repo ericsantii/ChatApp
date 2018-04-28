@@ -18,9 +18,25 @@ class PersonHandler:
         dao.closeDB()
         return jsonify(Person=mapped_result)
 
-    def getPersonById(self, pID):
+
+    def getPersonById(self):
         dao = PersonDAO()
         result = dao.getPersonById(pID)
+        if result is None:
+            dao.closeDB()
+            return jsonify(Error="Person NOT FOUND"), 404
+        else:
+            mapped = mapPersonToDict(result)
+            dao.closeDB()
+            return jsonify(Person=mapped)
+
+    def getPersonByUsername(self, args):
+        dao = PersonDAO()
+        username = request.get('username')
+        if not username or len(request.args) != 1:
+            dao.closeDB()
+            return jsonify(Error="Bad Request Arguments"), 400
+        result = dao.getPersonByUsername(username)
         if result is None:
             dao.closeDB()
             return jsonify(Error="Person NOT FOUND"), 404

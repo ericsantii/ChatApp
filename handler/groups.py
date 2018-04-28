@@ -2,7 +2,7 @@ from flask import jsonify
 
 from dao.groups import GroupDAO
 
-from mapToDictFunctions import mapGroupToDict, mapMessageToDict, mapPersonToDict
+from mapToDictFunctions import mapGroupToDict, mapMessageToDict, mapPersonToDict, mapMessageInfoToDict
 
 
 class GroupHandler:
@@ -66,7 +66,7 @@ class GroupHandler:
             return jsonify(Error="Message NOT FOUND"), 404
         results = []
         for row in message_list:
-            result = mapMessageToDict(row)
+            result = mapMessageInfoToDict(row)
             results.append(result)
         dao.closeDB()
         return jsonify(Message=results)
