@@ -11,7 +11,7 @@ class HashTagDAO:
 
     def getAllHashTags(self):
         cursor = self.conn.cursor()
-        query = "select * from HashTag;"
+        query = "select * from hashtag;"
         cursor.execute(query, )
         result = []
         for row in cursor:
@@ -29,7 +29,7 @@ class HashTagDAO:
 
     def getHashTagList(self, mID):
         cursor = self.conn.cursor()
-        query = "select * from HashTag where mID = %s;"
+        query = "select hID, hText from HashTag natural inner join contains where mID = %s;"
         cursor.execute(query, (mID,))
         result = []
         for row in cursor:
@@ -39,7 +39,7 @@ class HashTagDAO:
 
     def getMessageByHashTag(self, text):
         cursor = self.conn.cursor()
-        query = "select mID, mText, timedate, multimedia, pID, gID from message as m natural inner join contains as c natural inner join hashtag where hText = %s;"
+        query = "select mID, mText, timedate, pID, gID from message as m natural inner join contains as c natural inner join hashtag as ht where ht.hText = %s;"
         cursor.execute(query, (text,))
         result = []
         for row in cursor:

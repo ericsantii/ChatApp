@@ -14,6 +14,7 @@ class HashTagHandler:
             return jsonify(Error="HashTag NOT FOUND"), 404
         mapped_result = []
         for r in result:
+            print(r)
             mapped_result.append(mapHashTagToDict(r))
         dao.closeDB()
         return jsonify(HashTags=mapped_result)
@@ -44,9 +45,9 @@ class HashTagHandler:
         dao.closeDB()
         return jsonify(HashTags=mapped_result)
 
-    def getMessageByHashtag(self,request):
-        dao = HashTagDAO
-        text = request.args.get('text')
+    def getMessageByHashtag(self,args):
+        dao = HashTagDAO()
+        text = args.get('hText')
         if not text:
             dao.closeDB()
             return jsonify(Error="Bad Request Arguments"), 400

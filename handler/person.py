@@ -19,7 +19,7 @@ class PersonHandler:
         return jsonify(Person=mapped_result)
 
 
-    def getPersonById(self):
+    def getPersonById(self, pID):
         dao = PersonDAO()
         result = dao.getPersonById(pID)
         if result is None:
@@ -104,8 +104,14 @@ class PersonHandler:
             return jsonify(Error="Contact NOT FOUND"), 404
         results = []
         for row in contact_list:
-            result = mapPersonToDict(row)
-            results.append(result)
+            mappedResult = {}
+            mappedResult['pID'] = row[0]
+            mappedResult['username'] = row[1]
+            mappedResult['pFirstName'] = row[2]
+            mappedResult['pLastName'] = row[3]
+            mappedResult['pPhone'] = row[4]
+            mappedResult['pEmail'] = row[5]
+            results.append(mappedResult)
         dao.closeDB()
         return jsonify(Persons=results)
 

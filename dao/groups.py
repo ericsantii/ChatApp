@@ -29,7 +29,7 @@ class GroupDAO:
 
     def getOwnerByGroupId(self, gID):
         cursor = self.conn.cursor()
-        query = "select distinct pID, username, passwd, pFirstName, pLastName, pPhone, pEmail from Person natural inner join ChatGroup where gID = %s;"
+        query = "select distinct pID, username, pFirstName, pLastName, pPhone, pEmail from Person natural inner join ChatGroup where gID = %s;"
         cursor.execute(query, (gID,))
         result = cursor.fetchone()
         if not result:
@@ -42,7 +42,7 @@ class GroupDAO:
                 "(select message.mID, count(sub1.mID) as numOfLikes from message left join " \
                 "(select * from react where rTYpe = true) as sub1 on MESSAGE.mID = sub1.mID group by message.mID) as sub2 " \
                 "natural inner join (select message.mID, count(sub1.mID) as numOfDislikes from message " \
-                "left join (select * from react where rTYpe = true) as sub1 on MESSAGE.mID = sub1.mID group by message.mID) as sub3 " \
+                "left join (select * from react where rTYpe = false) as sub1 on MESSAGE.mID = sub1.mID group by message.mID) as sub3 " \
                 "natural INNER JOIN message natural inner join person where gID = %s;"
 
         cursor.execute(query, (gID,))
@@ -53,7 +53,7 @@ class GroupDAO:
 
     def getPeopleByGroupID(self, gID):
         cursor = self.conn.cursor()
-        query = "select pID, username, passwd, pFirstName, pLastName, pPhone, pEmail from Person natural inner join isMember where gID = %s;"
+        query = "select pID, username, password, pFirstName, pLastName, pPhone, pEmail from Person natural inner join isMember where gID = %s;"
         cursor.execute(query, (gID,))
         result = []
         for row in cursor:
@@ -62,7 +62,7 @@ class GroupDAO:
 
     def getAllOwners(self):
         cursor = self.conn.cursor()
-        query = "select distinct pID, username, passwd, pFirstName, pLastName, pPhone, pEmail from ChatGroup natural inner join Person;"
+        query = "select distinct pID, username, pFirstName, pLastName, pPhone, pEmail from ChatGroup natural inner join Person;"
         cursor.execute(query)
         result = []
         for row in cursor:

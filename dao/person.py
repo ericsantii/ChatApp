@@ -25,7 +25,7 @@ class PersonDAO:
             return None
         return result
 
-    def getPersonById(self, username):
+    def getPersonByUsername(self, username):
         cursor = self.conn.cursor()
         query = "select * from Person where username = %s;"
         cursor.execute(query, (username,))
@@ -54,7 +54,7 @@ class PersonDAO:
 
     def getMessagesByPersonID(self, pID):
         cursor = self.conn.cursor()
-        query = "select * from Messages where pID = %s;"
+        query = "select * from message where pID = %s;"
         cursor.execute(query, (pID,))
         result = []
         for row in cursor:
@@ -63,7 +63,7 @@ class PersonDAO:
 
     def getContactsByPersonID(self, pID):
         cursor = self.conn.cursor()
-        query = "select * from Person natural inner join hasContact where userID = %s;"
+        query = "select pID, username, pFirstName, pLastName, pPhone, pEmail from (select contactedID from hascontact where userID  = %s) as s1 inner join person as p1 on s1.contactedid = p1.pID;"
         cursor.execute(query, (pID,))
         result = []
         for row in cursor:

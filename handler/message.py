@@ -1,7 +1,7 @@
 from flask import jsonify, request
 from dao.message import MessageDAO
 from dao.groups import GroupDAO
-from mapToDictFunctions import mapToReactDict, mapToCount, mapMessageToDict
+from mapToDictFunctions import mapToReactDict, mapToCount, mapMessageToDict, mapPersonToDict
 
 
 class MessageHandler:
@@ -79,7 +79,7 @@ class MessageHandler:
         dao = MessageDAO()
         dao1 = GroupDAO()
         results = []
-        if not dao.getMessageById():
+        if not dao.getMessageById(mID):
             dao.closeDB()
             dao1.closeDB()
             return jsonify(Error="Message NOT FOUND"), 404
@@ -101,54 +101,64 @@ class MessageHandler:
         if not dao.getMessageById(mID):
             dao.closeDB()
             return jsonify(Error="Message NOT FOUND"), 404
-        list = dao.getNumofLikesbyMessageID(mID)
-        for row in list:
-            result = mapToCount(row)
-            results.append(result)
+        result = dao.getNumofLikesbyMessageID(mID)
+        mapped = {}
+        mapped['mID'] = mID
+        mapped['total'] = result[0]
         dao.closeDB()
-        return jsonify(Messages=results)
+        return jsonify(NumOfLikes=mapped)
 
     def getPersonWhoLikedMessageID(self, mID):
         dao = MessageDAO()
         if not dao.getMessageById(mID):
             dao.closeDB()
             return jsonify(Error="Message NOT FOUND"), 404
-        reacts_list = dao.getPersonWhoLikedMessageID(mID)
-        if not reacts_list:
+        persons_list = dao.getPersonWhoLikedMessageID(mID)
+        if not persons_list:
             dao.closeDB()
-            return jsonify(Error="React NOT FOUND"), 404
+            return jsonify(Error="Person NOT FOUND"), 404
         results = []
-        for row in reacts_list:
-            result = mapToReactDict(row)
+        for row in persons_list:
+            result = {}
+            result['pID'] = row[0]
+            result['pFirstName'] = row[1]
+            result['pLastName'] = row[2]
+            result['username'] = row[3]
+            result['pEmail'] = row[4]
             results.append(result)
         dao.closeDB()
-        return jsonify(Reacts=results)
+        return jsonify(Persons=results)
 
     def getPersonWhoDisikedMessageID(self, mID):
         dao = MessageDAO()
         if not dao.getMessageById(mID):
             dao.closeDB()
             return jsonify(Error="Message NOT FOUND"), 404
-        reacts_list = dao.getPersonWhoDislikedMessageID(mID)
-        if not reacts_list:
+        persons_list = dao.getPersonWhoDislikedMessageID(mID)
+        if not persons_list:
             dao.closeDB()
-            return jsonify(Error="React NOT FOUND"), 404
+            return jsonify(Error="Person NOT FOUND"), 404
         results = []
-        for row in reacts_list:
-            result = mapToReactDict(row)
+        for row in persons_list:
+            result = {}
+            result['pID'] = row[0]
+            result['pFirstName'] = row[1]
+            result['pLastName'] = row[2]
+            result['username'] = row[3]
+            result['pEmail'] = row[4]
             results.append(result)
         dao.closeDB()
-        return jsonify(Reacts=results)
+        return jsonify(Persons=results)
 
     def getNumOfDislikesMessageID(self, mID):
         dao = MessageDAO()
         results = []
-        if not dao.getMessageById():
+        if not dao.getMessageById(mID):
             dao.closeDB()
             return jsonify(Error="Message NOT FOUND"), 404
-        list = dao.getNumofDislikesbyMessageID(mID)
-        for row in list:
-            result = mapToCount(row)
-            results.append(result)
+        result = dao.getNumofDislikesbyMessageID(mID)
+        mapped = {}
+        mapped['mID'] = mID
+        mapped['total'] = result[0]
         dao.closeDB()
-        return jsonify(Messages=results)
+        return jsonify(NumOfDislikes=mapped)

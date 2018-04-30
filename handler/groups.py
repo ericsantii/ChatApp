@@ -38,9 +38,16 @@ class GroupHandler:
         if result is None:
             dao.closeDB()
             return jsonify(Error="Group NOT FOUND"), 404
-        result = mapPersonToDict(result)
+
+        mapperResult = {}
+        mapperResult['pID'] = result[0]
+        mapperResult['username'] = result[1]
+        mapperResult['pFirstName'] = result[2]
+        mapperResult['pLastName'] = result[3]
+        mapperResult['pPhone'] = result[4]
+        mapperResult['pEmail'] = result[5]
         dao.closeDB()
-        return jsonify(Person=result)
+        return jsonify(Person=mapperResult)
 
     def getPeopleByGroupID(self, gID):
         dao = GroupDAO()
@@ -79,7 +86,14 @@ class GroupHandler:
             return jsonify(Error="Owner NOT FOUND"), 404
         result = []
         for r in ownerList:
-            result.append(mapPersonToDict(r))
+            mappedResult = {}
+            mappedResult['pID'] = r[0]
+            mappedResult['username'] = r[1]
+            mappedResult['pFirstName'] = r[2]
+            mappedResult['pLastName'] = r[3]
+            mappedResult['pPhone'] = r[4]
+            mappedResult['pEmail'] = r[5]
+            result.append(mappedResult)
         dao.closeDB()
         return jsonify(Owner=result)
 

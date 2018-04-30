@@ -4,8 +4,10 @@ from handler.hashtag import HashTagHandler
 from handler.person import PersonHandler
 from handler.groups import GroupHandler
 from handler.message import MessageHandler
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+CORS(app)
 
 
 # Home Route which the applications starts in
@@ -97,6 +99,7 @@ def getNumofDislikesbyMessageID(mID):
 
 @app.route('/ChatApp/message/<int:mID>/likes/person', methods=['GET'])
 def getPersonWhoLikedMessageID(mID):
+
     return MessageHandler().getPersonWhoLikedMessageID(mID)
 
 
