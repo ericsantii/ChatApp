@@ -19,7 +19,7 @@ def home():
 # Person routes
 @app.route('/ChatApp/person', methods=['GET'])
 def getPerson():
-    if len(request.args) > 1:
+    if len(request.args) >= 1:
         return PersonHandler.getPersonByUsername(request.args)
     else:
         return PersonHandler().getAllPersons()
