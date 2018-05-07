@@ -32,8 +32,8 @@ class PersonHandler:
 
     def getPersonByUsername(self, args):
         dao = PersonDAO()
-        username = request.get('username')
-        if not username or len(request.args) != 1:
+        username = args.get('username')
+        if not username or len(args) != 1:
             dao.closeDB()
             return jsonify(Error="Bad Request Arguments"), 400
         result = dao.getPersonByUsername(username)
