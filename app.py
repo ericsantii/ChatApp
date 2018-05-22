@@ -210,8 +210,8 @@ def getDislikesPerDay():
     return MessageHandler().getNumOfDislikesPerDay()
 
 @app.route('/ChatApp/users/top', methods=['GET'])
-def getTopUsersPerDay():
-    return MessageHandler().getTopUsersPerDay()
+def getNumOfActiveUsersPerDay():
+    return MessageHandler().getNumOfActiveUsersPerDay()
 
 if __name__ == '__main__':
     app.run()

@@ -149,7 +149,7 @@ class MessageDAO:
 
     def getNumOfMessagesPerDay(self):
         cursor = self.conn.cursor()
-        query = "select DATE(timedate) as day, count(*) from message group by day order by day"
+        query = "select DATE(timedate) as day, count(*) from message group by day order by day desc limit 7"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -158,7 +158,7 @@ class MessageDAO:
 
     def getNumOfRepliesPerDay(self):
         cursor = self.conn.cursor()
-        query = "select DATE(timedate) as day, count(*) from (select * from message where mid in (select replymessageid from reply)) as replies group by day order by day"
+        query = "select DATE(timedate) as day, count(*) from (select * from message where mid in (select replymessageid from reply)) as replies group by day order by day desc limit 7"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -167,7 +167,7 @@ class MessageDAO:
 
     def getNumOfLikesPerDay(self):
         cursor = self.conn.cursor()
-        query = "select DATE(time) as day, count(*) from react where rType = True group by day order by day"
+        query = "select DATE(time) as day, count(*) from react where rType = True group by day order by day desc limit 7"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -176,16 +176,16 @@ class MessageDAO:
 
     def getNumOfDislikesPerDay(self):
         cursor = self.conn.cursor()
-        query = "select DATE(time) as day, count(*) from react where rType = False group by day order by day"
+        query = "select DATE(time) as day, count(*) from react where rType = False group by day order by day desc limit 7"
         cursor.execute(query)
         result = []
         for row in cursor:
             result.append(row)
         return result
 
-    def getTopUsersPerDay(self):
+    def getNumOfActiveUsersPerDay(self):
         cursor = self.conn.cursor()
-        query = "select DATE(time) as day, count(*) from react where rType = False group by day, pid order by day"
+        query = "select DATE(time) as day, count(distinct pid) from message group by day order by day desc limit 7"
         cursor.execute(query)
         result = []
         for row in cursor:

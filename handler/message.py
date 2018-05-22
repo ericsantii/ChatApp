@@ -287,9 +287,9 @@ class MessageHandler:
         dao.closeDB()
         return jsonify(LikesPerDay=mapped_results)
 
-    def getTopUsersPerDay(self):
+    def getNumOfActiveUsersPerDay(self):
         dao = MessageDAO()
-        results = dao.getTopUsersPerDay()
+        results = dao.getNumOfActiveUsersPerDay()
         mapped_results = []
         for result in results:
             dict = {}
@@ -297,4 +297,4 @@ class MessageHandler:
             dict['count'] = result[1]
             mapped_results.append(dict)
         dao.closeDB()
-        return jsonify(TopUsersPerDay=mapped_results)
+        return jsonify(NumOfActiveUsersPerDay=mapped_results)
