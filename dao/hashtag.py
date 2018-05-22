@@ -46,5 +46,14 @@ class HashTagDAO:
             result.append(row)
         return result
 
+    def getTopHashtags(self):
+        cursor = self.conn.cursor()
+        query = "select htext, count from (select hid, count(*) as count from contains group by hid) as num natural inner join hashtag order by count limit 10"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     def closeDB(self):
         self.conn.close()

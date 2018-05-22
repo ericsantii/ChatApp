@@ -69,5 +69,15 @@ class GroupDAO:
             result.append(row)
         return result
 
+
+    def addMember(self, pID, gID):
+        cursor = self.conn.cursor()
+        query = "insert into isMember values (%s, %s) returning pID, gID"
+        cursor.execute(query, (pID, gID,))
+        result = cursor.fetchone()
+        (pid, gid) = result[0], result[1]
+        self.conn.commit()
+        return pid, gid
+
     def closeDB(self):
         self.conn.close()

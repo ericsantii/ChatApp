@@ -70,5 +70,22 @@ class PersonDAO:
             result.append(row)
         return result
 
+    def loginUser(self, username, password):
+        cursor = self.conn.cursor()
+        query = "select pID, password = %s as authenticate from person where username = %s"
+        cursor.execute(query, (password, username, ))
+        result = cursor.fetchone()
+        if not result:
+            return None
+        return result
+
+    def addPerson(self, username, password, firstname, lastname, phone, email):
+        cursor = self.conn.cursor()
+        query = "insert into Person(username, password, pfirstname, plastname, pphone, pemail) values (%s, %s, %s, %s ,%s, %s) returning pID"
+        cursor.execute(query, (username, password, firstname, lastname, phone, email))
+        pID = cursor.fetchone()[0]
+        self.conn.commit()
+        return pID
+
     def closeDB(self):
         self.conn.close()

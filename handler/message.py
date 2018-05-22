@@ -1,6 +1,7 @@
 from flask import jsonify, request
 from dao.message import MessageDAO
 from dao.groups import GroupDAO
+from dao.hashtag import HashTagDAO
 from mapToDictFunctions import mapToReactDict, mapToCount, mapMessageToDict, mapPersonToDict
 
 
@@ -162,3 +163,138 @@ class MessageHandler:
         mapped['total'] = result[0]
         dao.closeDB()
         return jsonify(NumOfDislikes=mapped)
+
+    def addMessage(self, json):
+        dao = MessageDAO()
+        if len(json) != 3:
+            dao.closeDB()
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            mtext = json['mtext']
+            pid = json['pid']
+            gid = json['gid']
+
+            if mtext and pid and gid:
+                (mid, timedate) = dao.addMessage(mtext, pid, gid)
+                result = mapMessageToDict([mid, mtext, timedate, pid, gid])
+                dao.closeDB()
+                return jsonify(Message=result), 201
+            else:
+                dao.closeDB()
+                return jsonify(Error="Unexpected attributes in post request"), 400
+
+    def addMessageAsReply(self, originalMessage, json):
+        dao = MessageDAO()
+        if len(json) != 3:
+            dao.closeDB()
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            mtext = json['mtext']
+            pid = json['pid']
+            gid = json['gid']
+
+            if mtext and pid and gid:
+                (mid, timedate) = dao.addMessage(mtext, pid, gid)
+                oid, rid = dao.addMessageAsReply(originalMessage, mid)
+                result = mapMessageToDict([mid, mtext, timedate, pid, gid])
+                result['originalMessageID'] = oid
+                dao.closeDB()
+                return jsonify(Message=result), 201
+            else:
+                dao.closeDB()
+                return jsonify(Error="Unexpected attributes in post request"), 400
+
+    def likeMessage(self, pID, mID):
+        dao = MessageDAO()
+        pid, mid, rType = dao.likeMessage(pID, mID)
+        result = {}
+        result['pid'] = pid
+        result['mid'] = mid
+        result['rType'] = rType
+        dao.closeDB()
+        return jsonify(Liked=result), 201
+
+    def dislikeMessage(self, pID, mID):
+        dao = MessageDAO()
+        pid, mid, rType = dao.dislikeMessage(pID, mID)
+        result = {}
+        result['pid'] = pid
+        result['mid'] = mid
+        result['rType'] = rType
+        dao.closeDB()
+        return jsonify(Disliked=result), 201
+
+    def getMessagesWithHashtagInGroupID(self, ht, gID):
+        dao = MessageDAO()
+        dao1 = GroupDAO()
+        dao2 = HashTagDAO()
+        results = []
+        if not dao1.getGroupById(gID):
+            dao.closeDB()
+            dao1.closeDB()
+            dao2.closeDB()
+            return jsonify(Error="Group NOT FOUND"), 404
+        if not dao2.getMessageByHashTag(ht):
+            dao.closeDB()
+            dao1.closeDB()
+            dao2.closeDB()
+            return jsonify(Error="HashTag NOT FOUND"), 404
+        message_list = dao.getMessagesWithHashtagInGroupID(ht, gID)
+        for row in message_list:
+            result = mapMessageToDict(row)
+            results.append(result)
+        dao.closeDB()
+        dao1.closeDB()
+        dao2.closeDB()
+        return jsonify(Messages=results)
+
+    def getNumOfMessagesPerDay(self):
+        dao = MessageDAO()
+
+        results = dao.getNumOfMessagesPerDay()
+        mapped_results = []
+        for result in results:
+            dict = {}
+            dict['day'] = result[0]
+            dict['count'] = result[1]
+            mapped_results.append(dict)
+        dao.closeDB()
+        return jsonify(MessagesPerDay=mapped_results)
+
+
+    def getNumOfRepliesPerDay(self):
+        dao = MessageDAO()
+
+        results = dao.getNumOfRepliesPerDay()
+        mapped_results = []
+        for result in results:
+            dict = {}
+            dict['day'] = result[0]
+            dict['count'] = result[1]
+            mapped_results.append(dict)
+        dao.closeDB()
+        return jsonify(RepliesPerDay=mapped_results)
+
+    def getNumOfLikesPerDay(self):
+        dao = MessageDAO()
+        results = dao.getNumOfLikesPerDay()
+        mapped_results = []
+        for result in results:
+            dict = {}
+            dict['day'] = result[0]
+            dict['count'] = result[1]
+            mapped_results.append(dict)
+        dao.closeDB()
+        return jsonify(LikesPerDay=mapped_results)
+
+    def getTopUsersPerDay(self):
+        dao = MessageDAO()
+        results = dao.getTopUsersPerDay()
+        mapped_results = []
+        for result in results:
+            dict = {}
+            dict['pid'] = result[0]
+            dict['count'] = result[1]
+            mapped_results.append(dict)
+        dao.closeDB()
+        return jsonify(TopUsersPerDay=mapped_results)

@@ -17,12 +17,20 @@ def home():
 
 
 # Person routes
-@app.route('/ChatApp/person', methods=['GET'])
+@app.route('/ChatApp/login/<string:username>', methods= ['GET'])
+def loginPerson(username):
+    return PersonHandler().loginUser(username, request.args)
+
+@app.route('/ChatApp/person', methods=['GET', 'POST'])
 def getPerson():
-    if len(request.args) >= 1:
-        return PersonHandler().getPersonByUsername(request.args)
-    else:
-        return PersonHandler().getAllPersons()
+    if request.method == 'GET':
+        if len(request.args) >= 1:
+            return PersonHandler().getPersonByUsername(request.args)
+        else:
+            return PersonHandler().getAllPersons()
+    if request.method == 'POST':
+
+        return PersonHandler().addPerson(request.json)
 
 
 @app.route('/ChatApp/person/<int:pID>', methods=['GET'])
@@ -50,6 +58,10 @@ def getGroupsByPersonID(pID):
 def getMembersByGroupID(gID):
     return GroupHandler().getPeopleByGroupID(gID)
 
+@app.route('/ChatApp/group/<int:gID>/person/<int:pID>', methods=['POST'])
+def addMemberToGroup(gID, pID):
+    return GroupHandler().addMember(gID, pID)
+
 
 @app.route('/ChatApp/group', methods=['GET'])
 def getGroup():
@@ -67,10 +79,16 @@ def displayMessagesByGroupID(gID):
     return GroupHandler().getMessagesByGroupID(gID)
 
 
-@app.route('/ChatApp/message', methods=['GET'])
+@app.route('/ChatApp/message', methods=['GET', 'POST'])
 def getMessages():
-    return MessageHandler().getAllMessages()
+    if request.method == 'GET':
+        return MessageHandler().getAllMessages()
+    elif request.method == 'POST':
+        return MessageHandler().addMessage(request.json)
 
+@app.route('/ChatApp/reply/<int:mID>', methods=['POST'])
+def addMessageAsReply(mID):
+    return MessageHandler().addMessageAsReply(mID, request.json)
 
 @app.route('/ChatApp/message/<int:mID>', methods=['GET'])
 def getMessageByID(mID):
@@ -109,6 +127,13 @@ def getPersonWhoDisikedMessageID(mID):
 
 
 # React routes
+@app.route('/ChatApp/like/message/<int:mID>/person/<int:pID>', methods=['POST'])
+def likeMessage(mID, pID):
+    return MessageHandler().likeMessage(pID, mID)
+
+@app.route('/ChatApp/dislike/message/<int:mID>/person/<int:pID>', methods=['POST'])
+def dislikeMessage(mID, pID):
+    return MessageHandler().dislikeMessage(pID, mID)
 
 @app.route('/ChatApp/person/<int:pID>/reacts', methods=['GET'])
 def getReactsByPersonID(pID):
@@ -132,6 +157,10 @@ def getOriginalMessageByReplyID(mID):
     return MessageHandler().getOriginalMessageByReplyID(mID)
 
 
+
+
+
+
 # Contact routes
 
 @app.route('/ChatApp/person/<int:pID>/contacts', methods=['GET'])
@@ -148,6 +177,10 @@ def getHash():
     else:
         return HashTagHandler().getAllHashTags()
 
+@app.route('/ChatApp/messages/hashtag/<string:ht>/group/<int:gID>',methods=['GET'])
+def getMessagesWithHashtagInGroupID(ht, gID):
+    return MessageHandler().getMessagesWithHashtagInGroupID(ht, gID)
+
 @app.route('/ChatApp/hashtag/<int:hID>', methods=['GET'])
 def getHashByID(hID):
     return HashTagHandler().getHashTagByID(hID)
@@ -155,6 +188,30 @@ def getHashByID(hID):
 @app.route('/ChatApp/message/<int:mID>/hashtag', methods=['GET'])
 def getHashByMessageID(mID):
     return HashTagHandler().getHashTagsByMessageID(mID)
+
+@app.route('/ChatApp/hashtags/top', methods=['GET'])
+def getTopHashtags():
+    return HashTagHandler().getTopHashTags()
+
+@app.route('/ChatApp/messages/count', methods=['GET'])
+def getMessagesPerDay():
+    return MessageHandler().getNumOfMessagesPerDay()
+
+@app.route('/ChatApp/replies/count', methods=['GET'])
+def getRepliesPerDay():
+    return MessageHandler().getNumOfRepliesPerDay()
+
+@app.route('/ChatApp/likes/count', methods=['GET'])
+def getLikesPerDay():
+    return MessageHandler().getNumOfLikesPerDay()
+
+@app.route('/ChatApp/dislikes/count', methods=['GET'])
+def getDislikesPerDay():
+    return MessageHandler().getNumOfDislikesPerDay()
+
+@app.route('/ChatApp/users/top', methods=['GET'])
+def getTopUsersPerDay():
+    return MessageHandler().getTopUsersPerDay()
 
 if __name__ == '__main__':
     app.run()

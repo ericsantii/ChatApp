@@ -103,5 +103,95 @@ class MessageDAO:
             result.append(row)
         return result
 
+    def addMessage(self, mtext, pid, gid):
+        cursor = self.conn.cursor()
+        query = "insert into Message(mtext, timedate, pid, gid) values (%s, now(), %s, %s) returning mID, timedate"
+        cursor.execute(query, (mtext, pid, gid,))
+        result = cursor.fetchone()
+        (mID, timedate) = result[0], result[1]
+        self.conn.commit()
+        return mID, timedate
+
+    def likeMessage(self, pID, mID):
+        cursor = self.conn.cursor()
+        query = "insert into react values (%s, %s, true, now()) returning pID, mID, rType"
+        cursor.execute(query, (mID, pID,))
+        result = cursor.fetchone()
+        (pid, gid, rType) = result[0], result[1], result[2]
+        self.conn.commit()
+        return pid, gid, rType
+
+    def dislikeMessage(self, pID, mID):
+        cursor = self.conn.cursor()
+        query = "insert into react values (%s, %s, false, now()) returning pID, mID, rType"
+        cursor.execute(query, (mID, pID,))
+        result = cursor.fetchone()
+        (pid, gid, rType) = result[0], result[1], result[2]
+        self.conn.commit()
+        return pid, gid, rType
+
+    def getMessagesWithHashtagInGroupID(self, ht, gID):
+        cursor = self.conn.cursor()
+        query = "select mid, mtext, timedate, pid, gid from hashtag natural inner join contains natural inner join message where htext = %s and gID = %s;"
+        cursor.execute(query, (ht, gID,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+    def addMessageAsReply(self, originalMessageID, replyID):
+        cursor = self.conn.cursor()
+        query = "insert into reply values (%s, %s) returning originalmessageid, replymessageid;"
+        cursor.execute(query, (originalMessageID, replyID))
+        result = cursor.fetchone()
+        (oid, rid) = result[0], result[1]
+        self.conn.commit()
+        return oid,rid
+
+    def getNumOfMessagesPerDay(self):
+        cursor = self.conn.cursor()
+        query = "select DATE(timedate) as day, count(*) from message group by day order by day"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getNumOfRepliesPerDay(self):
+        cursor = self.conn.cursor()
+        query = "select DATE(timedate) as day, count(*) from (select * from message where mid in (select replymessageid from reply)) as replies group by day order by day"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getNumOfLikesPerDay(self):
+        cursor = self.conn.cursor()
+        query = "select DATE(time) as day, count(*) from react where rType = True group by day order by day"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getNumOfDislikesPerDay(self):
+        cursor = self.conn.cursor()
+        query = "select DATE(time) as day, count(*) from react where rType = False group by day order by day"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getTopUsersPerDay(self):
+        cursor = self.conn.cursor()
+        query = "select DATE(time) as day, count(*) from react where rType = False group by day, pid order by day"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+
     def closeDB(self):
         self.conn.close()

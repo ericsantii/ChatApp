@@ -115,6 +115,50 @@ class PersonHandler:
         dao.closeDB()
         return jsonify(Persons=results)
 
+    def loginUser(self, username, args):
+        dao = PersonDAO()
+        if len(args) != 1:
+            dao.closeDB()
+            return jsonify(Error="Bad Request Arguments"), 400
+        password = args.get('password')
+        if password:
+            result = dao.loginUser(username, password)
+            if not result:
+                dao.closeDB()
+                return jsonify(Error="Error Not Found"), 404
+            mapped = {}
+            mapped['pID'] = result[0]
+            mapped['authenticated'] = result[1]
+            dao.closeDB()
+            return jsonify(Authentication=mapped)
+
+        else:
+            dao.closeDB()
+            return jsonify(Error="Bad Request Arguments"), 400
+
+    def addPerson(self, json):
+        dao = PersonDAO()
+        if len(json) != 6:
+            dao.closeDB()
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            username = json['username']
+            password = json['password']
+            firstname = json['pfirstname']
+            lastname = json['plastname']
+            phone = json['pphone']
+            email = json['pemail']
+            if username and password and firstname and lastname and phone and email:
+                pid = dao.addPerson(username, password, firstname, lastname, phone, email)
+                result = mapPersonToDict([pid, username, password, firstname, lastname, phone, email])
+                dao.closeDB()
+                return jsonify(Person=result), 201
+            else:
+                dao.closeDB()
+                return jsonify(Error="Unexpected attributes in post request"), 400
+
+
+
 
 
 

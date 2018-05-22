@@ -59,3 +59,15 @@ class HashTagHandler:
             dao.closeDB()
             return jsonify(Messages= mapped_results)
 
+    def getTopHashTags(self):
+        dao = HashTagDAO()
+
+        results = dao.getTopHashtags()
+        mapped_results = []
+        for result in results:
+            dict = {}
+            dict['htext'] = result[0]
+            dict['count'] = result[1]
+            mapped_results.append(dict)
+        dao.closeDB()
+        return jsonify(TopHashtags=mapped_results)

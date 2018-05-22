@@ -97,4 +97,14 @@ class GroupHandler:
         dao.closeDB()
         return jsonify(Owner=result)
 
+    def addMember(self, gID, pID):
+        dao = GroupDAO()
+        pid, gid = dao.addMember(pID, gID)
+        result = {}
+        result['pid'] = pid
+        result['gid'] = gid
+        dao.closeDB()
+        return jsonify(Addition=result), 201
+
+
 
