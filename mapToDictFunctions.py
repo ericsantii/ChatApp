@@ -1,8 +1,8 @@
 def mapGroupToDict(row):
     result = {}
     result['gID'] = row[0]
-    result['gName'] = row[1]
-    result['pID'] = row[2]
+    result['pID'] = row[1]
+    result['gName'] = row[2]
     return result
 
 

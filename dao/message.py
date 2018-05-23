@@ -132,7 +132,7 @@ class MessageDAO:
 
     def getMessagesWithHashtagInGroupID(self, ht, gID):
         cursor = self.conn.cursor()
-        query = "select mid, mtext, timedate, pid, gid from hashtag natural inner join contains natural inner join message where htext = %s and gID = %s;"
+        query = "select mid, mtext, timedate, pid, gid from hashtag natural inner join contains natural inner join message where htext = %s and gID = %s order by timedate desc;"
         cursor.execute(query, (ht, gID,))
         result = []
         for row in cursor:
