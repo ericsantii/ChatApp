@@ -36,7 +36,7 @@ class PersonDAO:
 
     def getGroupsByPersonID(self, pID):
         cursor = self.conn.cursor()
-        query = "select * from ChatGroup natural inner join isMember where pID = %s;"
+        query = "select isMember.gID, gName, isMember.pID from ChatGroup inner join isMember on isMember.gID = ChatGroup.gID where isMember.pid = %s"
         cursor.execute(query, (pID,))
         result = []
         for row in cursor:
