@@ -287,6 +287,18 @@ class MessageHandler:
         dao.closeDB()
         return jsonify(LikesPerDay=mapped_results)
 
+    def getNumOfDislikesPerDay(self):
+        dao = MessageDAO()
+        results = dao.getNumOfDislikesPerDay()
+        mapped_results = []
+        for result in results:
+            dict = {}
+            dict['day'] = result[0]
+            dict['count'] = result[1]
+            mapped_results.append(dict)
+        dao.closeDB()
+        return jsonify(DislikesPerDay=mapped_results)
+
     def getNumOfActiveUsersPerDay(self):
         dao = MessageDAO()
         results = dao.getNumOfActiveUsersPerDay()
