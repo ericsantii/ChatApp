@@ -2,7 +2,7 @@ from flask import jsonify, request
 from dao.message import MessageDAO
 from dao.groups import GroupDAO
 from dao.hashtag import HashTagDAO
-from mapToDictFunctions import mapToReactDict, mapToCount, mapMessageToDict, mapPersonToDict
+from mapToDictFunctions import mapToReactDict, mapToCount, mapMessageToDict, mapPersonToDict, mapMessageInfoToDict
 
 
 class MessageHandler:
