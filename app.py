@@ -29,7 +29,6 @@ def getPerson():
         else:
             return PersonHandler().getAllPersons()
     if request.method == 'POST':
-
         return PersonHandler().addPerson(request.json)
 
 

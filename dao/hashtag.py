@@ -39,7 +39,13 @@ class HashTagDAO:
 
     def getMessageByHashTag(self, text):
         cursor = self.conn.cursor()
-        query = "select mID, mText, timedate, pID, gID from message as m natural inner join contains as c natural inner join hashtag as ht where ht.hText = %s;"
+        query = "select pid, mid, numoflikes, numofdislikes, mtext, timedate, username, pfirstName, " \
+                "pLastName from (select message.mID, count(sub1.mID) as numOfLikes from message left join " \
+                "(select * from react where rTYpe = true) as sub1 on MESSAGE.mID = sub1.mID group by message.mID) as sub2 " \
+                "natural inner join (select message.mID, count(sub1.mID) as numOfDislikes from message" \
+                " left join (select * from react where rTYpe = false) as sub1 on MESSAGE.mID = sub1.mID group by message.mID) as sub3 " \
+                "natural INNER JOIN message natural inner join person natural inner join contains natural " \
+                "inner join hashtag  where gID = %s and htext = %s order by timedate desc;"
         cursor.execute(query, (text,))
         result = []
         for row in cursor:
