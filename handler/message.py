@@ -305,7 +305,7 @@ class MessageHandler:
         mapped_results = []
         for result in results:
             dict = {}
-            dict['pid'] = result[0]
+            dict['day'] = result[0]
             dict['count'] = result[1]
             mapped_results.append(dict)
         dao.closeDB()
