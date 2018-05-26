@@ -241,7 +241,7 @@ class MessageHandler:
             return jsonify(Error="HashTag NOT FOUND"), 404
         message_list = dao.getMessagesWithHashtagInGroupID(ht, gID)
         for row in message_list:
-            result = mapMessageToDict(row)
+            result = mapMessageInfoToDict(row)
             results.append(result)
         dao.closeDB()
         dao1.closeDB()
