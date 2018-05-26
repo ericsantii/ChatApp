@@ -27,6 +27,18 @@ class HashTagDAO:
         self.conn.commit()
         return hid
 
+
+    def gethashtagIdByText(self, htext):
+        cursor = self.conn.cursor()
+        query = "select hid from hashtag where htext = %s;"
+        cursor.execute(query, (htext,))
+        result = cursor.fetchone()
+        if result:
+            hid = result[0]
+        else:
+            return None
+        return hid
+
     def addMessageContains(self, mid, hid):
         cursor = self.conn.cursor()
         query = "insert into contains(mid, hid) values (%s, %s);"

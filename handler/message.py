@@ -176,7 +176,7 @@ class MessageHandler:
 
             if mtext and pid and gid:
                 (mid, timedate) = dao.addMessage(mtext, pid, gid)
-                parseHashTag(mid, mtext)
+                self.parseHashTag(mid, mtext)
                 result = mapMessageToDict([mid, mtext, timedate, pid, gid])
                 dao.closeDB()
                 return jsonify(Message=result), 201
@@ -327,6 +327,10 @@ class MessageHandler:
         dao = HashTagDAO()
 
         for ht in hashtags:
-            hid = dao.addHashTag(ht)
+            hid = dao.gethashtagIdByText(ht)
+            if not hid:
+                hid = dao.addHashTag(ht)
             dao.addMessageContains(mid, hid)
+
+        dao.closeDB()
 

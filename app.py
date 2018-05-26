@@ -83,6 +83,7 @@ def getMessages():
     if request.method == 'GET':
         return MessageHandler().getAllMessages()
     elif request.method == 'POST':
+        print(request)
         return MessageHandler().addMessage(request.json)
 
 @app.route('/ChatApp/reply/<int:mID>', methods=['POST'])
