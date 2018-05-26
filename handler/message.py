@@ -176,6 +176,7 @@ class MessageHandler:
 
             if mtext and pid and gid:
                 (mid, timedate) = dao.addMessage(mtext, pid, gid)
+                parseHashTag(mid, mtext)
                 result = mapMessageToDict([mid, mtext, timedate, pid, gid])
                 dao.closeDB()
                 return jsonify(Message=result), 201
@@ -310,3 +311,22 @@ class MessageHandler:
             mapped_results.append(dict)
         dao.closeDB()
         return jsonify(NumOfActiveUsersPerDay=mapped_results)
+
+    def parseHashTag(self, mid, mtext):
+        hashtags = []
+        while '#' in mtext:
+            afterhtIndex = mtext.index("#") + 1
+            if ' ' in mtext[afterhtIndex:]:
+                spaceIndex = mtext[mtext.index("#") + 1:].index(' ') + afterhtIndex
+                hashtags.append(mtext[afterhtIndex:spaceIndex])
+                mtext = mtext[spaceIndex + 1:]
+            else:
+                hashtags.append(mtext[afterhtIndex:])
+                mtext = ''
+
+        dao = HashTagDAO()
+
+        for ht in hashtags:
+            hid = dao.addHashTag(ht)
+            dao.addMessageContains(mid, hid)
+

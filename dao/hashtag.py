@@ -18,6 +18,21 @@ class HashTagDAO:
             result.append(row)
         return result
 
+    def addHashTag(self, htext):
+        cursor = self.conn.cursor()
+        query = "insert into hashtag(htext) values (%s) returning hid;"
+        cursor.execute(query, (htext,))
+        result = cursor.fetchone()
+        hid = result[0]
+        self.conn.commit()
+        return hid
+
+    def addMessageContains(self, mid, hid):
+        cursor = self.conn.cursor()
+        query = "insert into contains(mid, hid) values (%s, %s);"
+        cursor.execute(query, (mid, hid,))
+        self.conn.commit()
+
     def getHashTagByID(self, hID):
         cursor = self.conn.cursor()
         query = "select * from HashTag where hID = %s;"
