@@ -196,6 +196,7 @@ class MessageHandler:
 
             if mtext and pid and gid:
                 (mid, timedate) = dao.addMessage(mtext, pid, gid)
+                self.parseHashTag(mid, mtext)
                 oid, rid = dao.addMessageAsReply(originalMessage, mid)
                 result = mapMessageToDict([mid, mtext, timedate, pid, gid])
                 result['originalMessageID'] = oid
