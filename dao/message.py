@@ -191,7 +191,7 @@ class MessageDAO:
 
     def getNumOfActiveUsersPerDay(self):
         cursor = self.conn.cursor()
-        query = "select DATE(timedate) as day, count(distinct pid) from message group by day order by day desc limit 7"
+        query = "select DATE(timedate) as day, count(distinct pid) from message group by day order by day desc limit 10"
         cursor.execute(query)
         result = []
         for row in cursor:
