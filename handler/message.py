@@ -186,17 +186,17 @@ class MessageHandler:
 
     def addMessageAsReply(self, originalMessage, json):
         dao = MessageDAO()
-        if len(json) != 3:
+        if len(json) != 4:
             dao.closeDB()
             return jsonify(Error="Malformed post request"), 400
         else:
             mtext = json['mtext']
+            rtext = json['rtext']
             pid = json['pid']
             gid = json['gid']
-
-            if mtext and pid and gid:
+            if mtext and pid and gid and rtext:
                 (mid, timedate) = dao.addMessage(mtext, pid, gid)
-                self.parseHashTag(mid, mtext)
+                self.parseHashTag(mid, rtext)
                 oid, rid = dao.addMessageAsReply(originalMessage, mid)
                 result = mapMessageToDict([mid, mtext, timedate, pid, gid])
                 result['originalMessageID'] = oid
