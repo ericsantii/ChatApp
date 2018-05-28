@@ -17,9 +17,9 @@ def home():
 
 
 # Person routes
-@app.route('/ChatApp/login/<string:username>', methods= ['GET'])
-def loginPerson(username):
-    return PersonHandler().loginUser(username, request.args)
+@app.route('/ChatApp/login', methods= ['POST'])
+def loginPerson():
+    return PersonHandler().loginUser(request.json)
 
 @app.route('/ChatApp/person', methods=['GET', 'POST'])
 def getPerson():
